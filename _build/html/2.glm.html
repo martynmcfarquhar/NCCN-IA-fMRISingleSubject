@@ -1,0 +1,732 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>The General Linear Model &#8212; fMRI Image Preprocessing</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '2.glm';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The GLM: A Worked Example" href="3.glm-example.html" />
+    <link rel="prev" title="The Need for Statistical Modelling" href="1.need-for-modelling.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="0.intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="fMRI Image Preprocessing - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="fMRI Image Preprocessing - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="0.intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1.need-for-modelling.html">The Need for Statistical Modelling</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">The General Linear Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.glm-example.html">The GLM: A Worked Example</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/martynmcfarquhar/NCCN-IA-fMRIPreProcessing" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/martynmcfarquhar/NCCN-IA-fMRIPreProcessing/issues/new?title=Issue%20on%20page%20%2F2.glm.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/2.glm.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>The General Linear Model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-linear-model-framework">The General Linear Model framework</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-design-matrix">Building the design matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-predictor-variables">Continuous predictor variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-predictor-variables">Categorical predictor variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-parameters">Estimating the parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-parameters">Interpreting the parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="the-general-linear-model">
+<h1>The General Linear Model<a class="headerlink" href="#the-general-linear-model" title="Permalink to this heading">#</a></h1>
+<section id="the-general-linear-model-framework">
+<h2>The General Linear Model framework<a class="headerlink" href="#the-general-linear-model-framework" title="Permalink to this heading">#</a></h2>
+<p>To understand the GLM, we have to start with <em>multiple regression</em>. In the Statistical Inference synchronous session we touched on simple linear regression, with a single outcome variable and a single predictor variable. Multiple regression is essentially the same, except we have multiple predictor variables. The multiple regression model with <span class="math notranslate nohighlight">\(k\)</span> predictor variables is therefore given by</p>
+<div class="math notranslate nohighlight">
+\[
+y_{i} = \beta_{0} + \beta_{1}x_{i1} + \beta_{2}x_{i2} + \dots + \beta_{k}x_{ik} + \epsilon_{i}
+\]</div>
+<p>where we usually assume a normal probability model of the form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+y_{i} &amp;\sim \mathcal{N}(\mu_{i},\sigma) \\
+\mu_{i} &amp;= \beta_{0} + \beta_{1}x_{i1} + \beta_{2}x_{i2} + \dots + \beta_{k}x_{ik}
+\end{align}
+\end{split}\]</div>
+<p>Conceptually, this is the same as simple regression, except for a few details. Firstly, rather than a regression line this model estimates a regression plane in k-dimensional space. For instance, if we have 2 predictor variables then k=2 and we can visualise the regression model as shown below</p>
+<p>Obviously when <span class="math notranslate nohighlight">\(k &gt; 2\)</span> this becomes impossible to visualise, but the principle stays the same. So on this basis, the means of our assumed normal distributions become points on a plane in k-dimensional space, rather than points on the regression line. The individual regression slopes for each predictor are given by the edges of this plane. Importantly, these slopes are not the same as fitting a simple regression model to each predictor separately. The coefficients represent the effect of each predictor after taking all other predictors into account. This is an important point, because adding more predictors or changing the predictors will change all the coefficients. Many modelling decisions we make are built on this fact.</p>
+<p>In terms of the GLM, the important point is that the GLM is simply multiple regression written in matrix notation. If you understand multiple regression, then you understand the GLM. The differences are largely notational, but beyond that the methods are exactly the same. The use of multiple regression as a general system for data analysis has long been used by statisticians, but it has taken time for other branches of science to catch up. For instance, Jacob Cohen wrote about this back in 1968, but it still has not completely caught on in Experimental Psychology. The usefulness of this approach is that we can use a single framework to define different kinds of statistical models, rather than treating them as separate entities. For instance, although regression and ANOVA models are usually taught separately, they can both be specified within the GLM framework. This flexibility is precisely why the GLM has been adopted as the main system for analysing neuroimaging data.</p>
+<p>In terms of writing multiple regression in matrix notation, we start with the observation that there are always <span class="math notranslate nohighlight">\(n\)</span> regression equations (one for each data point)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+y_{1} &amp;= \beta_{0} + \beta_{1}x_{11} + \beta_{2}x_{12} + \dots + \beta_{k}x_{1k} + \epsilon_{1} \\
+y_{2} &amp;= \beta_{0} + \beta_{1}x_{21} + \beta_{2}x_{22} + \dots + \beta_{k}x_{2k} + \epsilon_{2} \\
+y_{3} &amp;= \beta_{0} + \beta_{1}x_{31} + \beta_{2}x_{32} + \dots + \beta_{k}x_{3k} + \epsilon_{3} \\
+\vdots  \\
+y_{n} &amp;= \beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + \dots + \beta_{k}x_{nk} + \epsilon_{n}
+\end{align}
+\end{split}\]</div>
+<p>Notice how the values of the outcome variable, predictor variables and errors are different for each equation, but that the coefficients are the same for each equation. This indicates that the coefficients represents something that is consistent across all our data points, and thus provide a means of condensing our data down into a small number of values. Because the regression equations represent a system of linear equations, we know we can write them as vectors and matrices. Importantly, we can separate the predictor variables from the coefficients to give the following structure</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix}
+y_{1} \\
+y_{2} \\
+y_{3} \\
+\vdots \\
+y_{n}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1      &amp; x_{11} &amp; x_{12}  &amp; \dots  &amp; x_{1k} \\
+1      &amp; x_{21} &amp; x_{22}  &amp; \dots  &amp; x_{2k} \\
+1      &amp; x_{31} &amp; x_{32}  &amp; \dots  &amp; x_{3k} \\
+\vdots &amp; \vdots &amp; \vdots  &amp; \ddots &amp; \vdots \\
+1      &amp; x_{n1} &amp; x_{n2}  &amp; \dots  &amp; x_{nk} 
+\end{bmatrix}
+\begin{bmatrix}
+\beta_{0} \\
+\beta_{1} \\
+\beta_{2} \\
+\vdots    \\
+\beta_{k}
+\end{bmatrix}
++
+\begin{bmatrix}
+\epsilon_{1} \\
+\epsilon_{2} \\
+\epsilon_{3} \\
+\vdots       \\
+\epsilon_{n}
+\end{bmatrix}
+\end{split}\]</div>
+<p>which we can write shorthand as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}
+\]</div>
+<p>This is probably the most important equation you will see on this course. It encapsulates the entire structure of our data analysis and is something you should become intimately familiar with during this module. Y represents the data vector, containing the values of our outcome variable. X represents the design matrix, containing each of our predictor variables as columns. β represnts the vector of model coefficients/parameters and ε represents the vector of errors.</p>
+<p>The important part here is to recognise how multiplying the design matrix by the parameter vector recreates the n regression equations. The values of these equations give the predicted value of Y, which is the point on the regression plane for that particular combination of predictor variables.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\hat{\mathbf{Y}} = \mathbf{X}\boldsymbol{\beta} = 
+\begin{bmatrix}
+1      &amp; x_{11} &amp; x_{12}  &amp; \dots  &amp; x_{1k} \\
+1      &amp; x_{21} &amp; x_{22}  &amp; \dots  &amp; x_{2k} \\
+1      &amp; x_{31} &amp; x_{32}  &amp; \dots  &amp; x_{3k} \\
+\vdots &amp; \vdots &amp; \vdots  &amp; \ddots &amp; \vdots \\
+1      &amp; x_{n1} &amp; x_{n2}  &amp; \dots  &amp; x_{nk} 
+\end{bmatrix}
+\begin{bmatrix}
+\beta_{0} \\
+\beta_{1} \\
+\beta_{2} \\
+\vdots    \\
+\beta_{k}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\beta_{0} + \beta_{1}x_{11} + \beta_{2}x_{12} + \dots  + \beta_{k}x_{1k} \\
+\beta_{0} + \beta_{1}x_{21} + \beta_{2}x_{22} + \dots  + \beta_{k}x_{2k} \\
+\beta_{0} + \beta_{1}x_{31} + \beta_{2}x_{32} + \dots  + \beta_{k}x_{3k} \\
+\vdots  \\
+\beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + \dots  + \beta_{k}x_{nk}
+\end{bmatrix}
+\end{split}\]</div>
+<p>So another way to look at the GLM is as a model plus error</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{3}
+\hat{\mathbf{Y}} &amp;= \mathbf{X}\boldsymbol{\beta} &amp;&amp;+ \boldsymbol{\epsilon} \\
+\underset{\text{Data}}{\hphantom{\mathbf{Y}}} &amp;= \underset{\text{Model}}{\hat{\mathbf{Y}}} &amp;&amp;+ \underset{\text{Error}}{\boldsymbol{\epsilon}}
+\end{alignat*}
+\end{split}\]</div>
+<p>Do not worry at this stage if this all seems a bit abstract. In the next section, we will apply all this theory to a real dataset to see how it works.</p>
+</section>
+<section id="building-the-design-matrix">
+<h2>Building the design matrix<a class="headerlink" href="#building-the-design-matrix" title="Permalink to this heading">#</a></h2>
+<p>At the core of the GLM is the structure of the design matrix. This is the part of the GLM that changes from analysis-to-analysis and is the part that defines different models of our data. In fact the general bit of the GLM is a reference to its ability to accommodate different analyses, simply through the specification of different design matrices. As we will come to see, SPM visualises the design matrix for us as a means of communicating the model that we are fitting to our data. This is an indication of how important this part of the GLM is and thus it is important to understand how we can structure it to accommodate different types of predictor variables.</p>
+<section id="continuous-predictor-variables">
+<h3>Continuous predictor variables<a class="headerlink" href="#continuous-predictor-variables" title="Permalink to this heading">#</a></h3>
+<p>Any variable that is numeric and represents some sort of measurement is classified as a continuous predictor variable. This includes any quantifiable phenomena such as IQ, reaction time, score on a test, age, weight etc. These types of predictor variables are straightforward to use within the GLM because we simply add them verbatim to the design matrix as columns. As such, they do not require any form of special treatment to be used. We will see examples of these types of variables in the next section, when we look at an example GLM using some real-world data.</p>
+</section>
+<section id="categorical-predictor-variables">
+<h3>Categorical predictor variables<a class="headerlink" href="#categorical-predictor-variables" title="Permalink to this heading">#</a></h3>
+<p>Any variable that represents a form of grouping or category is classified as a categorical variable. This could include variables such as sex, patient group, blood type, ethnicity etc. Compared with continuous variables, categorical predictor variables are more complex to use with the GLM. Fundamentally, what we have to do is to turn these categories into numbers in order to put them in the design matrix. The way we do this is to form dummy variables. These are variables that have a value of 1 or 0 depending on the category. For instance, if the categories were male or female, we could assign values like so</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Category</p></th>
+<th class="head"><p>Dummy Variable Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Control</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Patient</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>If we have a variable with more than two categories, we can include more dummy variables like so</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Blood Type</p></th>
+<th class="head"><p>Dummy 1 Value</p></th>
+<th class="head"><p>Dummy 2 Value</p></th>
+<th class="head text-right"><p>Dummy 3 Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>A</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>B</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>AB</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td class="text-right"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>O</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>Notice how we always have one fewer dummy variable than the number of categories. So we only need 1 dummy variable to represent the 2 categories of male or female, and we only need 3 dummy variables to represent the 4 categories of blood type. As an example, we can see a design matrix below that contains a dummy variable representing diagnosis, where the first 3 subjects are patients and the last 3 are controls.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{X} = 
+\begin{bmatrix}
+1 &amp; 1 \\
+1 &amp; 1 \\
+1 &amp; 1 \\
+1 &amp; 0 \\
+1 &amp; 0 \\
+1 &amp; 0
+\end{bmatrix}
+\end{split}\]</div>
+<p>Any row that contains a 1 in the second column indicates that subject is female whereas any row that contains a 0 in the second column indicates that subject is male. We are going to see dummy variables used a lot and so do not worry if this concept is not clear yet. We will see plenty of examples as we press forward.</p>
+</section>
+</section>
+<section id="estimating-the-parameters">
+<h2>Estimating the parameters<a class="headerlink" href="#estimating-the-parameters" title="Permalink to this heading">#</a></h2>
+<p>Once we have constructed our design matrix, we have a fully-formed probability model of the form</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{Y} \sim \mathcal{N}\left(\mathbf{X}\boldsymbol{\beta},\sigma\mathbf{I}\right)
+\]</div>
+<p>The next step is therefore to use maximum likelihood methods to estimate the model parameters. The equations that are derived from the method of maximum likelihood can be written in matrix terms to give a single equation that will simultaneously estimate values for every parameter. This equation is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\boldsymbol{\beta}} = \left(\mathbf{X}^{\prime}\mathbf{X}\right)^{-1}\mathbf{X}^{\prime}\mathbf{Y}
+\]</div>
+<p>and is notable for its use of a matrix inverse. As you may remember from the Computational Tools lesson in Functional Neuroanatomy, inverting a matrix is a tricky business because an inverse may not always exist. This tells us something about the limitations of the GLM, namely that not every model we may want to use will be estimable. This is a thorny issue, but one which is thankfully rarely a concern when using SPM.</p>
+</section>
+<section id="interpreting-the-parameters">
+<h2>Interpreting the parameters<a class="headerlink" href="#interpreting-the-parameters" title="Permalink to this heading">#</a></h2>
+<p>Once we have the parameter estimates, our aim is to try and interpret what they mean, given that their values represents important summaries of the effects in our dataset. If the variable associated with a parameter estimate is a continuous variable, we would interpret the value as a regression slope, telling us how much our outcome variable is predicted to change for a unit increase in the predictor variable. For example, a regression slope with a value of -5.344 is visualised below</p>
+<p>which we can interpret as telling us that each unit increase on the predictor variable is associated with a decrease in the value of the outcome variable of 5.344. By comparison, if the variable associated with a parameter estimate is a categorical variable, we would interpret the value as a mean difference. To see why, consider what happens when we fit a regression slope to a dummy variable with a value of 0 or 1</p>
+<p>So we can see that the model is still fitting a regression slope, but one that goes from the mean of one category to the mean of the other. In this example, the slope has a value of 7.94 which tells us the mean difference between the categories. The intercept of the model is the mean of the group coded as 0 and a unit change simply refers to the change from one group to the other. So although this is still the same interpretation as any other regression slope, it is useful to think of the slopes from dummy variables representing mean differences.</p>
+<p>Although we can interpret the values of our parameter estimates, on their own this not enough because we also need to know how much we can trust these estimates. This is done by calculating the standard deviation of the sampling distribution of the estimates, known as the standard error. In the GLM, the standard errors of the parameter estimates can be calculated using the estimate of the model variance</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\sigma}^{2} = \frac{\boldsymbol{\epsilon}^{\prime}\boldsymbol{\epsilon}}{n-p}
+\]</div>
+<p>which is the squared estimate of the standard deviation of the normal distribution we are using for our model. Here, n is the number of rows of X and p is the number of model parameters (the number of columns of X). This is then combined with the design matrix to produce a variance-covariance matrix</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}\left(\hat{\boldsymbol{\beta}}\right) = \hat{\sigma}^{2}\left(\mathbf{X}^{\prime}\mathbf{X}\right)^{-1}
+\]</div>
+<p>You do not need to worry too much about what this represents. The main point is just that the standard errors are taken as the square-root of the diagonal elements of this matrix.</p>
+</section>
+<section id="inference">
+<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h2>
+<p>… Although this seems fairly straightforward, inference using neuroimaging data has some very specific challenges that we will pick up on next week.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "jupyter_matlab_kernel"
+        },
+        kernelOptions: {
+            name: "jupyter_matlab_kernel",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'jupyter_matlab_kernel'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="1.need-for-modelling.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">The Need for Statistical Modelling</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3.glm-example.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">The GLM: A Worked Example</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-linear-model-framework">The General Linear Model framework</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-design-matrix">Building the design matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-predictor-variables">Continuous predictor variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-predictor-variables">Categorical predictor variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-parameters">Estimating the parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-parameters">Interpreting the parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr Martyn McFarquhar
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

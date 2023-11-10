@@ -1,0 +1,9 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: 0.intro
+chapters:
+- file: 1.need-for-modelling
+- file: 2.glm
+- file: 3.glm-example
