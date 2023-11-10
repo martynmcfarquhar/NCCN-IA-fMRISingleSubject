@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
-  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -67,6 +67,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = '3.glm-example';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using the GLM to Model fMRI Data" href="4.glm-fmri.html" />
     <link rel="prev" title="The General Linear Model" href="2.glm.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -172,6 +173,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="1.need-for-modelling.html">The Need for Statistical Modelling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2.glm.html">The General Linear Model</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">The GLM: A Worked Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.glm-fmri.html">Using the GLM to Model fMRI Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5.glm-fmri-problems.html">Problems With Using the GLM to Model fMRI Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6.single-subject-spm.html">Single-subject Modelling in SPM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7.summary-quiz.html">Summary and Quiz</a></li>
 </ul>
 
     </div>
@@ -427,7 +432,7 @@ document.write(`
 </tr>
 </tbody>
 </table>
-<p>In this example, MPG is our outcome variable and so forms the vector <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span></p>
+<p>In this example, <code class="docutils literal notranslate"><span class="pre">MPG</span></code> is the outcome variable and so forms the vector <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">21.0</span><span class="w"> </span><span class="mf">21.0</span><span class="w"> </span><span class="mf">22.8</span><span class="w"> </span><span class="mf">21.4</span><span class="w"> </span><span class="mf">18.7</span><span class="w"> </span><span class="mf">18.1</span><span class="p">]</span><span class="o">&#39;</span>
@@ -447,7 +452,7 @@ document.write(`
 </section>
 <section id="building-the-design-matrix">
 <h2>Building the Design Matrix<a class="headerlink" href="#building-the-design-matrix" title="Permalink to this heading">#</a></h2>
-<p>In terms of our design matrix we need a column of 1s for the constant, followed by horsepower, weight and then a dummy variable for transmission. So our design matrix will be as follows</p>
+<p>In terms of our design matrix we need a column of 1s for the constant, followed by <code class="docutils literal notranslate"><span class="pre">horsepower</span></code>, <code class="docutils literal notranslate"><span class="pre">weight</span></code> and then a dummy variable for <code class="docutils literal notranslate"><span class="pre">transmission</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="p">;</span><span class="w">     </span><span class="k">...</span>
@@ -467,7 +472,7 @@ document.write(`
     1.0000  105.0000    3.4600         0
 </pre></body></html></div></div>
 </div>
-<p>Mathematically, our GLM currently has the form</p>
+<p>Taking both the outcome and design matrix together, our GLM currently has the form</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{bmatrix}
@@ -503,7 +508,7 @@ document.write(`
 \epsilon_{6}
 \end{bmatrix}
 \end{split}\]</div>
-<p>So, we have our <em>outcome</em> in <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> and our <em>predictors</em> arranged in <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, but we do not know the values of the <em>parameters</em> or the <em>errors</em>.</p>
+<p>So, we have our <em>outcome</em> in <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> and our <em>predictors</em> arranged in <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, but we do not know the values of the <em>parameters</em> in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> or the <em>errors</em> in <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span>.</p>
 </section>
 <section id="parameter-estimation">
 <h2>Parameter Estimation<a class="headerlink" href="#parameter-estimation" title="Permalink to this heading">#</a></h2>
@@ -522,7 +527,7 @@ document.write(`
    -1.7150
 </pre></body></html></div></div>
 </div>
-<p>Once we have the parameter estimates we can calculate the predicted values of <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span></p>
+<p>These are the most likely values for the parameters in the population, based on the current data. Once we have the parameter estimates we can calculate the predicted values of <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span>, denoted <span class="math notranslate nohighlight">\(\hat{\mathbf{Y}}\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Yhat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">X</span><span class="o">*</span><span class="nb">beta</span>
@@ -539,7 +544,7 @@ document.write(`
    19.0840
 </pre></body></html></div></div>
 </div>
-<p>which can then be used calculate the errors</p>
+<p>These values represent the points on the regression plane for each combination of predictor values. For instance, focussing on the first estimate, the model predicts that any car with 110 horsepower that weighs 2,620 lbs and has a manual transmission will achieve 21.4985 MPG. These estimates can then be used calculate the errors</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">E</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Yhat</span>
@@ -556,7 +561,7 @@ document.write(`
    -0.9840
 </pre></body></html></div></div>
 </div>
-<p>Meaning we now have all the elements to complete the GLM equation</p>
+<p>which represent the degree to which each of the model predictions diverge from the original data. We now have all the elements needed to complete the GLM equation</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{bmatrix}
@@ -595,7 +600,7 @@ document.write(`
 </section>
 <section id="interpreting-the-parameters">
 <h2>Interpreting the Parameters<a class="headerlink" href="#interpreting-the-parameters" title="Permalink to this heading">#</a></h2>
-<p>In terms of interpreting the parameters, it’s helpful to put them in a table</p>
+<p>In terms of interpreting the parameters, it is helpful to first put them in a table</p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Effect</p></th>
@@ -617,13 +622,13 @@ document.write(`
 </tr>
 </tbody>
 </table>
-<p>The interpretation is that</p>
+<p>The interpretation is then that</p>
 <ul class="simple">
-<li><p>An increase in horsepower of 1 leads to a decrease in MPG of 0.005 miles</p></li>
-<li><p>An increase in weight of 1000lbs leads to a decrease in MPG of 4.946 miles</p></li>
-<li><p>The average difference between automatic and manual transmission cars is a reduction in MPG of 1.715 miles</p></li>
+<li><p>An increase in <code class="docutils literal notranslate"><span class="pre">horsepower</span></code> of 1 leads to a decrease in <code class="docutils literal notranslate"><span class="pre">MPG</span></code> of 0.005 miles</p></li>
+<li><p>An increase in <code class="docutils literal notranslate"><span class="pre">weight</span></code> of 1000lbs leads to a decrease in <code class="docutils literal notranslate"><span class="pre">MPG</span></code> of 4.946 miles</p></li>
+<li><p>The average difference between automatic and manual transmission cars is a reduction in <code class="docutils literal notranslate"><span class="pre">MPG</span></code> of 1.715 miles</p></li>
 </ul>
-<p>The standard errors can finally be computed using the variance estimate</p>
+<p>While at first it seems that <code class="docutils literal notranslate"><span class="pre">weight</span></code> has the most effect on <code class="docutils literal notranslate"><span class="pre">MPG</span></code>, it is notable that these raw estimates are difficult to interpret due to their differing units (e.g. 1 horsepower vs 1000lbs), and the fact that we have not taken the uncertainty of the estimates into account. To do so, we can calculate the standard errors using the estimate of the model variance</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="w">      </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
@@ -651,12 +656,12 @@ document.write(`
     2.4422
 </pre></body></html></div></div>
 </div>
-<p>which we can add to the table from above</p>
+<p>We can then add these estimates to the table from above</p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Effect</p></th>
 <th class="head"><p>Estimate</p></th>
-<th class="head"><p>StdErr</p></th>
+<th class="head"><p>SE</p></th>
 </tr>
 </thead>
 <tbody>
@@ -697,19 +702,20 @@ document.write(`
    -0.7022
 </pre></body></html></div></div>
 </div>
-<p>Which we can then use to query the null <em>t</em>-distribution with <span class="math notranslate nohighlight">\(n-p\)</span> degrees of freedom in order to calculate <em>p</em>-values</p>
+<p>which we can then use to calculate <em>p</em>-values by querying the null <em>t</em>-distribution with <span class="math notranslate nohighlight">\(n-p\)</span> degrees of freedom</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">tcdf</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">n</span><span class="o">-</span><span class="n">p</span><span class="p">)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">pvals</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">tcdf</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">n</span><span class="o">-</span><span class="n">p</span><span class="p">);</span><span class="w"> </span><span class="c">% one-tailed tests</span>
+<span class="n">pvals</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">pvals</span><span class="w"> </span><span class="o">.*</span><span class="w"> </span><span class="mi">2</span><span class="w">            </span><span class="c">% two-tailed tests</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><html><body><pre>ans = 4x1 double
-    0.0319
-    0.4284
-    0.1245
-    0.2776
+<div class="output text_html"><html><body><pre>pvals = 4x1 double
+    0.0638
+    0.8569
+    0.2491
+    0.5553
 </pre></body></html></div></div>
 </div>
 <p>Which can add to our table to complete all the information we need for this analysis</p>
@@ -717,7 +723,7 @@ document.write(`
 <thead>
 <tr class="row-odd"><th class="head"><p>Effect</p></th>
 <th class="head"><p>Estimate</p></th>
-<th class="head"><p>StdErr</p></th>
+<th class="head"><p>SE</p></th>
 <th class="head"><p><em>t</em></p></th>
 <th class="head"><p><em>p</em></p></th>
 </tr>
@@ -727,29 +733,29 @@ document.write(`
 <td><p>36.700</p></td>
 <td><p>9.739</p></td>
 <td><p>3.769</p></td>
-<td><p><strong>0.032</strong></p></td>
+<td><p>0.064</p></td>
 </tr>
 <tr class="row-odd"><td><p>Horsepower</p></td>
 <td><p>-0.005</p></td>
 <td><p>0.024</p></td>
 <td><p>-0.205</p></td>
-<td><p>0.428</p></td>
+<td><p>0.857</p></td>
 </tr>
 <tr class="row-even"><td><p>Weight</p></td>
 <td><p>-4.945</p></td>
 <td><p>3.075</p></td>
 <td><p>-1.608</p></td>
-<td><p>0.125</p></td>
+<td><p>0.249</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmission</p></td>
 <td><p>-1.715</p></td>
 <td><p>2.442</p></td>
 <td><p>-0.702</p></td>
-<td><p>0.278</p></td>
+<td><p>0.555</p></td>
 </tr>
 </tbody>
 </table>
-<p>Based on this information, we would conclude that only the value of the constant was significantly different from zero.</p>
+<p>Based on this information, we would conclude that none of the parameters were significantly different from zero. So although it appeared as if <code class="docutils literal notranslate"><span class="pre">weight</span></code> would be the most relevant predictor of <code class="docutils literal notranslate"><span class="pre">MPG</span></code>, according to this analysis there is not enough evidence to discount the posibility of <em>no</em> relationsip with <code class="docutils literal notranslate"><span class="pre">MPG</span></code> across all the predictor variables. Remember, that this conclusion is largely governed by the degree of <em>uncertainty</em> in the parameter estimates, due to the small sample. It is likely that with more data that the standard errors would decrease and a clearer picture of the relationship between these variables and <code class="docutils literal notranslate"><span class="pre">MPG</span></code> would emerge.</p>
 </section>
 </section>
 
@@ -791,6 +797,15 @@ document.write(`
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">The General Linear Model</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="4.glm-fmri.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Using the GLM to Model fMRI Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -859,8 +874,8 @@ By Dr Martyn McFarquhar
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+  <script src="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
 
   <footer class="bd-footer">
   </footer>
