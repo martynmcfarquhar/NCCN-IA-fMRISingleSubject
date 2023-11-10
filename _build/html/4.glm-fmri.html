@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>The Need for Statistical Modelling &#8212; fMRI Image Preprocessing</title>
+    <title>Using the GLM to Model fMRI Data &#8212; fMRI Image Preprocessing</title>
   
   
   
@@ -64,11 +64,11 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '1.need-for-modelling';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '4.glm-fmri';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="The General Linear Model" href="2.glm.html" />
-    <link rel="prev" title="Introduction" href="0.intro.html" />
+    <link rel="next" title="Problems With Using the GLM to Model fMRI Data" href="5.glm-fmri-problems.html" />
+    <link rel="prev" title="The GLM: A Worked Example" href="3.glm-example.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -170,10 +170,10 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">The Need for Statistical Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.need-for-modelling.html">The Need for Statistical Modelling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2.glm.html">The General Linear Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3.glm-example.html">The GLM: A Worked Example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4.glm-fmri.html">Using the GLM to Model fMRI Data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using the GLM to Model fMRI Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="5.glm-fmri-problems.html">Problems With Using the GLM to Model fMRI Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="6.single-subject-spm.html">Single-subject Modelling in SPM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="7.summary-quiz.html">Summary and Quiz</a></li>
@@ -248,7 +248,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/martynmcfarquhar/NCCN-IA-fMRIPreProcessing/issues/new?title=Issue%20on%20page%20%2F1.need-for-modelling.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/martynmcfarquhar/NCCN-IA-fMRIPreProcessing/issues/new?title=Issue%20on%20page%20%2F4.glm-fmri.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -278,7 +278,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="_sources/1.need-for-modelling.ipynb" target="_blank"
+      <li><a href="_sources/4.glm-fmri.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -360,7 +360,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>The Need for Statistical Modelling</h1>
+    <h1>Using the GLM to Model fMRI Data</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -370,8 +370,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-do-we-want-to-model-fmri-data">Why Do We Want to Model fMRI Data?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-model-fmri-data">How Do We Model fMRI Data?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-predictors-for-the-time-series">Creating Predictors for the Time Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-design-matrix">Visualising the Design Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-and-regression-perspectives">Time Series and Regression Perspectives</a></li>
 </ul>
             </nav>
         </div>
@@ -383,22 +384,50 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="the-need-for-statistical-modelling">
-<h1>The Need for Statistical Modelling<a class="headerlink" href="#the-need-for-statistical-modelling" title="Permalink to this heading">#</a></h1>
-<section id="why-do-we-want-to-model-fmri-data">
-<h2>Why Do We Want to Model fMRI Data?<a class="headerlink" href="#why-do-we-want-to-model-fmri-data" title="Permalink to this heading">#</a></h2>
-<p>In order to understand the need for statistical modelling, consider an fMRI dataset of dimensions 50 <span class="math notranslate nohighlight">\(\times\)</span> 60 <span class="math notranslate nohighlight">\(\times\)</span> 50. A single volume alone will contain 150,000 voxels. If we had TR=2 and scanned for only 10 minutes we would collect 300 volumes. This leads to a total of 45,000,000 data points from this basic fMRI dataset. In part, the aim of statistical modelling is to help us make sense of this huge amount of data. In this sense, modelling the data is a means of condensing all these values into a smaller set of values that provide information on the magnitude of the experimental effects.</p>
-<p>A related point is that statistical modelling allows us to separate the effects of interest from the noise. As we know, the variation in the BOLD signal could comes from a variety of sources. This includes subject motion and scanner noise as well as true changes associated with our experiment. A statistical model allows us to separate out these effects so that we can focus only on those of interest and discount any sources of variation not associated with our experiment, as illustrated below.</p>
-<p>A model also allows us to quantify our degree of certainty about the experimental effects given the amount of noise in the data. This certainty can be combined with the magnitudes of the experimental effects to form statistics that can be used to answer questions about which brain regions are associated with our experimental task, as well as how those regions change across different experimental conditions. All of this allows us to simplify our data down into the parts we are most interested in and reach conclusions about the association between brain responses and our experiment.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The term <em>model</em> can be thought of …</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="using-the-glm-to-model-fmri-data">
+<h1>Using the GLM to Model fMRI Data<a class="headerlink" href="#using-the-glm-to-model-fmri-data" title="Permalink to this heading">#</a></h1>
+<p>So now we have seen how to use the GLM to estimate parameters and their uncertainty using non-imaging data, but how do we apply this to an fMRI dataset? Remember from previous lessons that we have focused on the fMRI time series at each voxel as our primary data of interest. In the context of the GLM, these time series represents our outcome variable. What about our predictor variables? Well, as we will see, we can create predictors for the change in signal based on the timing of our experimental conditions. So for each voxel we have a different outcome variable and the same set of predictors. The approach is then to loop through every voxel in the image, estimating the GLM for each time series separately. This approach is known as the mass-univariate framework, and was first introduced by Friston et al. (1994).
+The mass-univariate framework</p>
+<p>The mass-univariate approach to modelling fMRI data is fairly straightforward if you already understand the GLM. We build a design matrix of predictors that relate to our experimental conditions that we call X. We then use X to estimate the GLM at each voxel separately. So for voxel <span class="math notranslate nohighlight">\(\nu\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{Y}_{\nu} = \mathbf{X}\boldsymbol{\beta}_{\nu} + \boldsymbol{\epsilon}_{\nu}
+\]</div>
+<p>so that the outcome variable, parameters and errors are unique to that voxel, but the design matrix is the same across all voxels. By doing this, we will end up with as many <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> vectors and <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> vectors as there are voxels. These values can be saved to images, as illustrated below. Typically SPM will not keep the images of the residuals in order to save space, but will keep the image of <span class="math notranslate nohighlight">\(\sigma^{2}_{\nu}\)</span> for later calculation of the standard errors.</p>
+<p>It is important to take a moment and consider what these images are showing. If we remember the interpretation of the parameters from the GLM, a parameter estimate image associated with a continuous predictor variable will show us the magnitude of the regression slope at each voxel. Similarly, a parameter estimate image associated with a categorical predictor variable will show us the magnitude of the mean difference at each voxel. In both cases, brighter voxels mean larger estimates and darker voxels mean smaller estimates. Importantly, because these estimates can be positive or negative, those regions that are darkest or brightest are of most interest, with those regions that are grey representing estimates hovering around 0. Even before going any further we can see how these images show us interesting regional effects associated with our predictor variables.</p>
+<section id="creating-predictors-for-the-time-series">
+<h2>Creating Predictors for the Time Series<a class="headerlink" href="#creating-predictors-for-the-time-series" title="Permalink to this heading">#</a></h2>
+<p>As indicated above, the mass-univariate approach depends upon forming a design matrix that can be used at each voxel to predict changes in the BOLD signal associated with our experimental conditions. The easiest way to do this is to use a dummy variable, where a value of 1 indicates the presence of an experimental stimulus and a value of 0 indicates its absence. To make this clear, imagine a very simple finger tapping experiment where the subject is instructed to tap their fingers for 7 seconds followed by resting for 7 seconds. We repeat this on-off pattern 8 times. In order to code this as a dummy variable, we can use a value of 0 to represent periods of rest and a value of 1 to indicate periods of tapping. Any region of the brain that follows this on-off pattern we assume is related to the action of finger tapping. For instance, consider the illustration below showing a timeseries from the motor cortex on the left and a dummy variable for the tapping conditions on the right. This type of dummy variable forms what is known as a block design, which we will learn more about in the Experimental Design and Optimisation module. You may also see this type of dummy variable referred to as a box-car regressor.</p>
+<p>In terms of the GLM, adding this form of dummy variable is straightforward, as shown on the right. The design matrix contains a columns of 1’s for the intercept and then our dummy variable coding which elements of the timeseries in Y were measured during rest and which elements were measured during tapping. In terms of interpreting the parameters, we know that a dummy variable will give us a mean difference between the category coded with a 1 and the category coded with a 0. In this instance, it will tell us the average difference in signal between the rest and tapping conditions. Our image of the estimate of <span class="math notranslate nohighlight">\(\beta_{1}\)</span> will therefore show us where in the brain the largest signal change occurred between rest and tapping. The value of <span class="math notranslate nohighlight">\(\beta_{0}\)</span> will therefore be the average signal during the rest condition, forming our baseline. The average signal value during the tapping condition is therefore given by <span class="math notranslate nohighlight">\(\beta_{0} + \beta_{1}\)</span>, as illustrated below.</p>
+</section>
+<section id="visualising-the-design-matrix">
+<h2>Visualising the Design Matrix<a class="headerlink" href="#visualising-the-design-matrix" title="Permalink to this heading">#</a></h2>
+<p>As already indicated, the design matrix is a very important part of the GLM. No only is it the only element of the GLM equation that is constant across voxels, but it also encodes our predictions about what we expect to see in regions of the brain that are responding to our experimental conditions. Knowing the structure of the design matrix is therefore essential to be able to interpret the parameter estimates. Because of this, SPM take the unique step of drawing the design matrix for us as a summary of our model. When we come to specifying the GLM using SPM, we will be presented with the design matrix drawn as a greyscale image, as illustrated below. Here, solid blocks of colour represent dummy variables whereas those columns with a gradient represent continuous variables.</p>
+<p>We can see the same effect by using the <code class="docutils literal notranslate"><span class="pre">imagesc</span></code> function in MATLAB with the design matrix from the previous example</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="p">;</span><span class="w">     </span><span class="k">...</span>
+<span class="w">     </span><span class="mi">110</span><span class="w">   </span><span class="mi">110</span><span class="w">   </span><span class="mi">93</span><span class="w">    </span><span class="mi">110</span><span class="w">   </span><span class="mi">175</span><span class="w">   </span><span class="mi">105</span><span class="p">;</span><span class="w">   </span><span class="k">...</span>
+<span class="w">     </span><span class="mf">2.620</span><span class="w"> </span><span class="mf">2.875</span><span class="w"> </span><span class="mf">2.320</span><span class="w"> </span><span class="mf">3.215</span><span class="w"> </span><span class="mf">3.440</span><span class="w"> </span><span class="mf">3.460</span><span class="p">;</span><span class="w"> </span><span class="k">...</span>
+<span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">0</span><span class="w">     </span><span class="mi">0</span><span class="w">     </span><span class="mi">0</span><span class="p">]</span><span class="o">&#39;</span><span class="p">;</span>
+
+<span class="n">X</span><span class="p">(:,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rescale</span><span class="p">(</span><span class="n">X</span><span class="p">(:,</span><span class="mi">2</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c">% Scale horsepower into [-1 1]</span>
+<span class="n">X</span><span class="p">(:,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rescale</span><span class="p">(</span><span class="n">X</span><span class="p">(:,</span><span class="mi">3</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c">% Scale weight into [-1 1]</span>
+
+<span class="nb">imagesc</span><span class="p">(</span><span class="n">X</span><span class="p">);</span><span class="w"> </span><span class="nb">colormap</span><span class="p">(</span><span class="s">&#39;gray&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/427c9bd75e4dfde1f363aeaf7913e901e96f8111db12c21dd18d789f171dd066.png" src="_images/427c9bd75e4dfde1f363aeaf7913e901e96f8111db12c21dd18d789f171dd066.png" />
+</div>
 </div>
 </section>
-<section id="how-do-we-model-fmri-data">
-<h2>How Do We Model fMRI Data?<a class="headerlink" href="#how-do-we-model-fmri-data" title="Permalink to this heading">#</a></h2>
-<p>Recall that each voxel from a single volume in an fMRI dataset represents a single point of a time series. This time series reflects how the measured signal changed during the course of our experiment. As illustrated below, there is a time series at every voxel in an fMRI dataset.</p>
-<p>In the Statistical Parametric Mapping approach to modelling fMRI data, we fit a statistical model to each one of these timeseries separately. The estimated parameters from those models then provide us with some indication about the magnitude and direction of our experimental effects. The tool that SPM uses to do this is known as the General Linear Model (GLM). The GLM is one of the most important concepts you willl learn about in this course and will be the main focus of this lesson and, in many ways, this whole module.</p>
+<section id="time-series-and-regression-perspectives">
+<h2>Time Series and Regression Perspectives<a class="headerlink" href="#time-series-and-regression-perspectives" title="Permalink to this heading">#</a></h2>
+<p>Compared to when we were applying the GLM to non-imaging data, one of the additional complications of timeseries data is that it has a natural order based on when each data point was collected. What this means is that there are actually two complimentary perspectives we can use to view the data and the model. This can be helpful because both perspectives are correct, but you may find one more intuitive than the other.</p>
+<p>In the time series perspective, we view the data in its natural ordering. So when plotted, we have time on the x-axis and intensity on the y-axis. From this perspective, we can see gross changes in the shape of the signal over time. We can also superimpose our model prediction to see where the predicted signal change corresponds to a change in the raw data. This perspective is shown in the left column of the figure below for a timeseries with a strong signal change (top) and a weak signal change (bottom).</p>
+<p>In the regression perspective, we view the data like a typical multiple regression problem. So when plotted, we have our predictor variable on the x-axis and intensity on the y-axis. For a dummy predictor variable, this means our x-axis will correspond to values of 1 and 0, depending on whether the data were gathered during one experimental condition or the other. From this perspective, superimposing the model prediction means drawing the regression line between the two clusters of data. This perspective is shown in the right column of the figure below.</p>
 </section>
 </section>
 
@@ -433,20 +462,20 @@ document.write(`
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="0.intro.html"
+       href="3.glm-example.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Introduction</p>
+        <p class="prev-next-title">The GLM: A Worked Example</p>
       </div>
     </a>
     <a class="right-next"
-       href="2.glm.html"
+       href="5.glm-fmri-problems.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">The General Linear Model</p>
+        <p class="prev-next-title">Problems With Using the GLM to Model fMRI Data</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -465,8 +494,9 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-do-we-want-to-model-fmri-data">Why Do We Want to Model fMRI Data?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-model-fmri-data">How Do We Model fMRI Data?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-predictors-for-the-time-series">Creating Predictors for the Time Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-design-matrix">Visualising the Design Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-and-regression-perspectives">Time Series and Regression Perspectives</a></li>
 </ul>
   </nav></div>
 

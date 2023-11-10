@@ -7,8 +7,9 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; fMRI Image Preprocessing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Single-subject Modelling in SPM &#8212; fMRI Image Preprocessing</title>
   
   
   
@@ -61,9 +62,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
-    <link rel="index" title="Index" href="#" />
+    <script>DOCUMENTATION_OPTIONS.pagename = '6.single-subject-spm';</script>
+    <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Summary and Quiz" href="7.summary-quiz.html" />
+    <link rel="prev" title="Problems With Using the GLM to Model fMRI Data" href="5.glm-fmri-problems.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -164,13 +167,13 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="1.need-for-modelling.html">The Need for Statistical Modelling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2.glm.html">The General Linear Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3.glm-example.html">The GLM: A Worked Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4.glm-fmri.html">Using the GLM to Model fMRI Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="5.glm-fmri-problems.html">Problems With Using the GLM to Model fMRI Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="6.single-subject-spm.html">Single-subject Modelling in SPM</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Single-subject Modelling in SPM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="7.summary-quiz.html">Summary and Quiz</a></li>
 </ul>
 
@@ -243,7 +246,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/martynmcfarquhar/NCCN-IA-fMRIPreProcessing/issues/new?title=Issue%20on%20page%20%2Fgenindex.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/martynmcfarquhar/NCCN-IA-fMRIPreProcessing/issues/new?title=Issue%20on%20page%20%2F6.single-subject-spm.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -255,6 +258,54 @@ const thebe_selector_output = ".output, .cell_output"
   </span>
 <span class="btn__text-container">Open issue</span>
 </a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/6.single-subject-spm.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
 </li>
       
   </ul>
@@ -294,7 +345,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -305,11 +358,21 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1></h1>
+    <h1>Single-subject Modelling in SPM</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-experiment">Example Experiment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#video">Video</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -319,13 +382,47 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
+  <section class="tex2jax_ignore mathjax_ignore" id="single-subject-modelling-in-spm">
+<h1>Single-subject Modelling in SPM<a class="headerlink" href="#single-subject-modelling-in-spm" title="Permalink to this heading">#</a></h1>
+<p>The video below will show you how to specify a single-subject GLM using SPM12. These models are also known as 1st-level models, for reasons we will cover later in this module. The dataset for this example consists of a fully pre-processed 4D functional scan that can be downloaded, with associated timing information, from here.</p>
+<section id="example-experiment">
+<h2>Example Experiment<a class="headerlink" href="#example-experiment" title="Permalink to this heading">#</a></h2>
+<p>The experiment modelled in the video is a simple block design. The task involved viewing pictures of different valences in blocks, taken from the International Affective Picture System. Each block consisted of 6 pictures from the same valence category and the blocks were arranged as illustrated below</p>
+<p>Examples of images shown during the positive block are given below</p>
+<p>Examples of images shown during the negative block are given below</p>
+<p>Examples of images shown during the neutral block are given below</p>
+<p>Between each repetition of positive, negative and neutral blocks, the subjects were asked to rest for 15 seconds. During this time they saw a fixation cross on the screen which turned into a double-cross 5 seconds before the end of rest. This is illustrated below.</p>
+<p>In terms of the scanning details, the TR was 2s, the TE was 30ms and the voxel size was 3mm isotropic. 145 volumes were collected of dimensions 53 x 63 x 52 voxels. The data has already been pre-processed by realignment to the first volume, normalisation to MNI space and Gaussian smoothing using a kernel of 8 x 8 x 8mm3.</p>
+<p>In terms of the modelling approach, the video will show you how to specify a simple on-off dummy variable for each condition that will then be convolved with the canonical HRF. Importantly, the approach taken in the video is to use the rest condition as an implicit baseline. This means we do not model rest explicitly as a dummy variable, but instead leave it to form our constant or baseline condition. As explained earlier, this means our parameter estimates can be interpreted as mean differences representing the average signal change from rest for each experimental condition.</p>
+</section>
+<section id="inference">
+<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h2>
+<p>Of note is that the video stops short of calculating <em>t</em>-statistics and <em>p</em>-values for the purpose of inference. Although seemingly a simple step in the examples shown in the lesson, inference using images is a much more complex affair. As such, we will leave this element of the analysis until next week.</p>
+</section>
+<section id="video">
+<h2>Video<a class="headerlink" href="#video" title="Permalink to this heading">#</a></h2>
+</section>
+</section>
 
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
-</div>
-
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "jupyter_matlab_kernel"
+        },
+        kernelOptions: {
+            name: "jupyter_matlab_kernel",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'jupyter_matlab_kernel'</script>
 
                 </article>
               
@@ -337,12 +434,46 @@ document.write(`
                 <footer class="prev-next-footer">
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="5.glm-fmri-problems.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Problems With Using the GLM to Model fMRI Data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="7.summary-quiz.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Summary and Quiz</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-experiment">Example Experiment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#video">Video</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

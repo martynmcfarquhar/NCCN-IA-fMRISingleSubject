@@ -7,3 +7,7 @@ chapters:
 - file: 1.need-for-modelling
 - file: 2.glm
 - file: 3.glm-example
+- file: 4.glm-fmri
+- file: 5.glm-fmri-problems
+- file: 6.single-subject-spm
+- file: 7.summary-quiz
