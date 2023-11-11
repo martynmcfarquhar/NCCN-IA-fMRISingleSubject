@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>The GLM: A Worked Example &#8212; fMRI Image Preprocessing</title>
+    <title>The GLM: A Worked Example &#8212; fMRI Single-subject Statistical Modelling</title>
   
   
   
@@ -154,8 +154,8 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="fMRI Image Preprocessing - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="fMRI Image Preprocessing - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="fMRI Single-subject Statistical Modelling - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="fMRI Single-subject Statistical Modelling - Home"/>`);</script>
   
   
 </a></div>
@@ -375,6 +375,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation">Parameter Estimation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-parameters">Interpreting the Parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-fitlm">Using <code class="docutils literal notranslate"><span class="pre">fitlm</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -757,6 +758,70 @@ document.write(`
 </table>
 <p>Based on this information, we would conclude that none of the parameters were significantly different from zero. So although it appeared as if <code class="docutils literal notranslate"><span class="pre">weight</span></code> would be the most relevant predictor of <code class="docutils literal notranslate"><span class="pre">MPG</span></code>, according to this analysis there is not enough evidence to discount the posibility of <em>no</em> relationsip with <code class="docutils literal notranslate"><span class="pre">MPG</span></code> across all the predictor variables. Remember, that this conclusion is largely governed by the degree of <em>uncertainty</em> in the parameter estimates, due to the small sample. It is likely that with more data that the standard errors would decrease and a clearer picture of the relationship between these variables and <code class="docutils literal notranslate"><span class="pre">MPG</span></code> would emerge.</p>
 </section>
+<section id="using-fitlm">
+<h2>Using <code class="docutils literal notranslate"><span class="pre">fitlm</span></code><a class="headerlink" href="#using-fitlm" title="Permalink to this heading">#</a></h2>
+<p>We can confirm the manual calculations given above by using the <code class="docutils literal notranslate"><span class="pre">fitlm</span></code> function from the MATLAB <a class="reference external" href="https://uk.mathworks.com/products/statistics.html">Statistics and Machine Learning</a> toolbox. We pass the predictor variables as the first argument (missing out the constant) and the outcome variable as the second argument. As we can see, this function returns a table of values identical to those given above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">fitlm</span><span class="p">(</span><span class="n">X</span><span class="p">(:,</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">),</span><span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><html><body><pre>Model = 
+Linear regression model:
+    y ~ 1 + x1 + x2 + x3
+
+Estimated Coefficients:
+                    <strong>Estimate</strong>        <strong>SE</strong>        <strong>tStat</strong>       <strong>pValue</strong> 
+                   <strong>__________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>
+
+    <strong>(Intercept)</strong>          36.7      9.7385      3.7686    0.063752
+    <strong>x1         </strong>    -0.0048303    0.023622    -0.20448      0.8569
+    <strong>x2         </strong>       -4.9448       3.075     -1.6081     0.24908
+    <strong>x3         </strong>        -1.715      2.4422    -0.70224     0.55526
+
+
+Number of observations: 6, Error degrees of freedom: 2
+Root Mean Squared Error: 1.26
+R-squared: 0.797,  Adjusted R-Squared: 0.493
+F-statistic vs. constant model: 2.62, p-value = 0.288</pre></body></html></div></div>
+</div>
+<p>We can use the returned <code class="docutils literal notranslate"><span class="pre">Model</span></code> object to create <em>added variable</em> plots to visualise the edges of the regression plane, defined by the parameter estimates. For <code class="docutils literal notranslate"><span class="pre">horsepower</span></code> we have</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/64de104ab28782fffcaf220cff156ec7b640d6213d59510a3fb668181a8daaff.png" src="_images/64de104ab28782fffcaf220cff156ec7b640d6213d59510a3fb668181a8daaff.png" />
+</div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">weight</span></code> we have</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/06a3844b858c44b1b55424f941bee1f963e93305f66e4d450ba4fe3e5c6fe00c.png" src="_images/06a3844b858c44b1b55424f941bee1f963e93305f66e4d450ba4fe3e5c6fe00c.png" />
+</div>
+</div>
+<p>and for <code class="docutils literal notranslate"><span class="pre">transmission</span></code> we have</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/92020e000122c47c45e2161243a178741c31f818bf4ad8e01700a3b6458e8646.png" src="_images/92020e000122c47c45e2161243a178741c31f818bf4ad8e01700a3b6458e8646.png" />
+</div>
+</div>
+<p>Noting that this no longer appears to be a dummy variable because it has been <em>adjusted</em> for the presence of the other variables in the model. In all cases, the very wide confidence bands are a result of large uncertainty in the parameter estimates, due to the small sample size.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -827,6 +892,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation">Parameter Estimation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-parameters">Interpreting the Parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-fitlm">Using <code class="docutils literal notranslate"><span class="pre">fitlm</span></code></a></li>
 </ul>
   </nav></div>
 
@@ -850,7 +916,7 @@ By Dr Martyn McFarquhar
     
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>

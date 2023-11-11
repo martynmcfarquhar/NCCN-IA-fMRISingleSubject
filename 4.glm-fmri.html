@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Using the GLM to Model fMRI Data &#8212; fMRI Image Preprocessing</title>
+    <title>Using the GLM to Model fMRI Data &#8212; fMRI Single-subject Statistical Modelling</title>
   
   
   
@@ -154,8 +154,8 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="fMRI Image Preprocessing - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="fMRI Image Preprocessing - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="fMRI Single-subject Statistical Modelling - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="fMRI Single-subject Statistical Modelling - Home"/>`);</script>
   
   
 </a></div>
@@ -406,20 +406,20 @@ The mass-univariate framework</p>
 <p>We can see the same effect by using the <code class="docutils literal notranslate"><span class="pre">imagesc</span></code> function in MATLAB with the design matrix from the previous example</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="p">;</span><span class="w">     </span><span class="k">...</span>
-<span class="w">     </span><span class="mi">110</span><span class="w">   </span><span class="mi">110</span><span class="w">   </span><span class="mi">93</span><span class="w">    </span><span class="mi">110</span><span class="w">   </span><span class="mi">175</span><span class="w">   </span><span class="mi">105</span><span class="p">;</span><span class="w">   </span><span class="k">...</span>
-<span class="w">     </span><span class="mf">2.620</span><span class="w"> </span><span class="mf">2.875</span><span class="w"> </span><span class="mf">2.320</span><span class="w"> </span><span class="mf">3.215</span><span class="w"> </span><span class="mf">3.440</span><span class="w"> </span><span class="mf">3.460</span><span class="p">;</span><span class="w"> </span><span class="k">...</span>
-<span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">0</span><span class="w">     </span><span class="mi">0</span><span class="w">     </span><span class="mi">0</span><span class="p">]</span><span class="o">&#39;</span><span class="p">;</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Xi</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="p">;</span><span class="w">     </span><span class="k">...</span>
+<span class="w">      </span><span class="mi">110</span><span class="w">   </span><span class="mi">110</span><span class="w">   </span><span class="mi">93</span><span class="w">    </span><span class="mi">110</span><span class="w">   </span><span class="mi">175</span><span class="w">   </span><span class="mi">105</span><span class="p">;</span><span class="w">   </span><span class="k">...</span>
+<span class="w">      </span><span class="mf">2.620</span><span class="w"> </span><span class="mf">2.875</span><span class="w"> </span><span class="mf">2.320</span><span class="w"> </span><span class="mf">3.215</span><span class="w"> </span><span class="mf">3.440</span><span class="w"> </span><span class="mf">3.460</span><span class="p">;</span><span class="w"> </span><span class="k">...</span>
+<span class="w">      </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">0</span><span class="w">     </span><span class="mi">0</span><span class="w">     </span><span class="mi">0</span><span class="p">]</span><span class="o">&#39;</span><span class="p">;</span>
 
-<span class="n">X</span><span class="p">(:,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rescale</span><span class="p">(</span><span class="n">X</span><span class="p">(:,</span><span class="mi">2</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c">% Scale horsepower into [-1 1]</span>
-<span class="n">X</span><span class="p">(:,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rescale</span><span class="p">(</span><span class="n">X</span><span class="p">(:,</span><span class="mi">3</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c">% Scale weight into [-1 1]</span>
+<span class="n">Xi</span><span class="p">(:,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rescale</span><span class="p">(</span><span class="n">Xi</span><span class="p">(:,</span><span class="mi">2</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c">% Scale horsepower into [-1 1]</span>
+<span class="n">Xi</span><span class="p">(:,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rescale</span><span class="p">(</span><span class="n">Xi</span><span class="p">(:,</span><span class="mi">3</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c">% Scale weight into [-1 1]</span>
 
-<span class="nb">imagesc</span><span class="p">(</span><span class="n">X</span><span class="p">);</span><span class="w"> </span><span class="nb">colormap</span><span class="p">(</span><span class="s">&#39;gray&#39;</span><span class="p">);</span>
+<span class="nb">imagesc</span><span class="p">(</span><span class="n">Xi</span><span class="p">);</span><span class="w"> </span><span class="nb">colormap</span><span class="p">(</span><span class="s">&#39;gray&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/427c9bd75e4dfde1f363aeaf7913e901e96f8111db12c21dd18d789f171dd066.png" src="_images/427c9bd75e4dfde1f363aeaf7913e901e96f8111db12c21dd18d789f171dd066.png" />
+<img alt="_images/2d173252bf4e4bbff47584a86a56a7544f7b261238db12f72b373dc8f9ed0ec6.png" src="_images/2d173252bf4e4bbff47584a86a56a7544f7b261238db12f72b373dc8f9ed0ec6.png" />
 </div>
 </div>
 </section>
@@ -520,7 +520,7 @@ By Dr Martyn McFarquhar
     
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>
