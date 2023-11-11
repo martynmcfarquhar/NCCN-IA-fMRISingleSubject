@@ -1,9 +1,10 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: fMRI Image Preprocessing
-author: Dr Martyn McFarquhar
-logo: logo.png
+title:     fMRI Single-subject Statistical Modelling
+author:    Dr Martyn McFarquhar
+copyright: "2023"
+logo:      logo.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
