@@ -388,16 +388,28 @@ document.write(`
 <section id="why-do-we-want-to-model-fmri-data">
 <h2>Why Do We Want to Model fMRI Data?<a class="headerlink" href="#why-do-we-want-to-model-fmri-data" title="Permalink to this heading">#</a></h2>
 <p>In order to understand the need for statistical modelling, consider an fMRI dataset of dimensions 50 <span class="math notranslate nohighlight">\(\times\)</span> 60 <span class="math notranslate nohighlight">\(\times\)</span> 50. A single volume alone will contain 150,000 voxels. If we had TR=2 and scanned for only 10 minutes we would collect 300 volumes. This leads to a total of 45,000,000 data points from this basic fMRI dataset. In part, the aim of statistical modelling is to help us make sense of this huge amount of data. In this sense, modelling the data is a means of condensing all these values into a smaller set of values that provide information on the magnitude of the experimental effects.</p>
-<p>A related point is that statistical modelling allows us to separate the effects of interest from the noise. As we know, the variation in the BOLD signal could comes from a variety of sources. This includes subject motion and scanner noise as well as true changes associated with our experiment. A statistical model allows us to separate out these effects so that we can focus only on those of interest and discount any sources of variation not associated with our experiment, as illustrated below.</p>
+<p>A related point is that statistical modelling allows us to separate the effects of interest from the noise. As we know, the variation in the BOLD signal could comes from a variety of sources. This includes subject motion and scanner noise as well as true changes associated with our experiment. A statistical model allows us to separate out these effects so that we can focus only on those of interest and discount any sources of variation not associated with our experiment, as illustrated in <a class="reference internal" href="#modelling-fig"><span class="std std-numref">Fig. 1</span></a>.</p>
+<figure class="align-default" id="modelling-fig">
+<a class="reference internal image-reference" href="_images/modelling.png"><img alt="_images/modelling.png" src="_images/modelling.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Illustration of how a statistical model splits a dataset into the effects of interest and error.</span><a class="headerlink" href="#modelling-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <p>A model also allows us to quantify our degree of certainty about the experimental effects given the amount of noise in the data. This certainty can be combined with the magnitudes of the experimental effects to form statistics that can be used to answer questions about which brain regions are associated with our experimental task, as well as how those regions change across different experimental conditions. All of this allows us to simplify our data down into the parts we are most interested in and reach conclusions about the association between brain responses and our experiment.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The term <em>model</em> can be thought of …</p>
+<p>The term <em>model</em> can be thought of in a similar fashion to its everyday use. In much the same way that a <em>model</em> is a simplified replication of something, a statistical model is a simplification of reality. In this sense, a model is not designed to create an <em>exact</em> prediction of the phenomena under study. Instead, a good model captures the general patterns in the relationships between the variables of interest, producing a prediction that is <em>close enough</em> to have some utility. As the statistician George Box stated: “All models are wrong, but some are useful”.</p>
 </div>
 </section>
 <section id="how-do-we-model-fmri-data">
 <h2>How Do We Model fMRI Data?<a class="headerlink" href="#how-do-we-model-fmri-data" title="Permalink to this heading">#</a></h2>
-<p>Recall that each voxel from a single volume in an fMRI dataset represents a single point of a time series. This time series reflects how the measured signal changed during the course of our experiment. As illustrated below, there is a time series at every voxel in an fMRI dataset.</p>
+<p>Recall that each voxel from a single volume in an fMRI dataset represents a single point of a time series. This time series reflects how the measured signal changed during the course of our experiment. As illustrated in <a class="reference internal" href="#timeseries-fig"><span class="std std-numref">Fig. 2</span></a>, there is a time series at every voxel in an fMRI dataset.</p>
+<figure class="align-default" id="timeseries-fig">
+<a class="reference internal image-reference" href="_images/time-series-everywhere.png"><img alt="_images/time-series-everywhere.png" src="_images/time-series-everywhere.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Illustration of how each voxel of an image is associated with a time series of BOLD signal change.</span><a class="headerlink" href="#timeseries-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <p>In the Statistical Parametric Mapping approach to modelling fMRI data, we fit a statistical model to each one of these timeseries separately. The estimated parameters from those models then provide us with some indication about the magnitude and direction of our experimental effects. The tool that SPM uses to do this is known as the General Linear Model (GLM). The GLM is one of the most important concepts you willl learn about in this course and will be the main focus of this lesson and, in many ways, this whole module.</p>
 </section>
 </section>
