@@ -370,7 +370,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-linear-model-framework">The General Linear Model Framework</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-linear-model-framework">The General Linear Model Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-regression">Simple Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression">Multiple Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-matrix-form">Multiple Regression in Matrix Form</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-design-matrix">Building the Design Matrix</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-predictor-variables">Continuous Predictor Variables</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-predictor-variables">Categorical Predictor Variables</a></li>
@@ -392,31 +397,124 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="the-general-linear-model">
 <h1>The General Linear Model<a class="headerlink" href="#the-general-linear-model" title="Permalink to this heading">#</a></h1>
+<p>To begin with, we will take a high-level perspective on the GLM as a <em>framework</em> that can be applied to any dataset. This may appear somewhat abstract on a first read, however, we will see how this is applied to a real dataset in the next section. Remember that at this point we are not talking about fMRI data specifically. Given that this is a specialised application of the GLM, we first need to discuss the general theory before seeing how this traditional approach needs to be adjusted to suit modelling an fMRI time series.</p>
 <section id="the-general-linear-model-framework">
 <h2>The General Linear Model Framework<a class="headerlink" href="#the-general-linear-model-framework" title="Permalink to this heading">#</a></h2>
-<p>To understand the GLM, we have to start with <em>multiple regression</em>. In the Statistical Inference synchronous session we touched on simple linear regression, with a single outcome variable and a single predictor variable. Multiple regression is essentially the same, except we have multiple predictor variables. The multiple regression model with <span class="math notranslate nohighlight">\(k\)</span> predictor variables is therefore given by</p>
+<p>To begin with, we will discuss the mathematical framework behind the GLM. In order to understand the GLM, we need to understand <em>multiple regression</em> which, in its most basic form, is know as <em>simple</em> regression.</p>
+<section id="simple-regression">
+<h3>Simple Regression<a class="headerlink" href="#simple-regression" title="Permalink to this heading">#</a></h3>
+<p>In a simple regression model there is a single outcome variable <span class="math notranslate nohighlight">\(y\)</span> that is associated with a single predictor variable <span class="math notranslate nohighlight">\(x\)</span>. The simple regression model takes the form</p>
 <div class="math notranslate nohighlight">
 \[
-y_{i} = \beta_{0} + \beta_{1}x_{i1} + \beta_{2}x_{i2} + \dots + \beta_{k}x_{ik} + \epsilon_{i}
+y_{i} = \beta_{0} + \beta_{1}x_{i} + \epsilon_{i}
 \]</div>
-<p>where we usually assume a normal probability model of the form</p>
+<p>which defines a straight-line fit to the data, with <span class="math notranslate nohighlight">\(\beta_{0}\)</span> representing the <em>intercept</em> and <span class="math notranslate nohighlight">\(\beta_{1}\)</span> representing the <em>slope</em>. The term <span class="math notranslate nohighlight">\(\epsilon\)</span> quantifies the amount of <em>error</em> in the model, allowing for the fact that a perfect fit between the two variables is rarely possible. This model is illustrated in <a class="reference internal" href="#simple-fig"><span class="std std-numref">Fig. 4</span></a>. In this example, the manager of a production line wants a good estimate of the required number of worker hours given the number of units that must be produced (the <em>lot size</em>).</p>
+<figure class="align-default" id="simple-fig">
+<a class="reference internal image-reference" href="_images/simple-reg.png"><img alt="_images/simple-reg.png" src="_images/simple-reg.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Illustration of how a simple regression model amounts to constructing a straight-line to summarise the relationship between the predictor variable and the outcome variable.</span><a class="headerlink" href="#simple-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>As we can see, the simple regression model consists of a straight line through the scatterplot of measurements. For each value of <code class="docutils literal notranslate"><span class="pre">Lot</span> <span class="pre">Size</span></code>, the point on the regression line represents the predicted value of <code class="docutils literal notranslate"><span class="pre">Hours</span></code>. The magnitude of the estimated slope is therefore of interest, given that this quantifies the <em>strength</em> of the general relationship between the two variables. However, we also need to consider how close the raw data sits to the regression line as data that are tightly-packed around the regression line suggest a model that fits the data well. This concept of <em>model fit</em> is therefore quantified by the <em>errors</em>. The smaller that the <span class="math notranslate nohighlight">\(\epsilon\)</span> terms are, the shorter the vertical distances between the regression line and the raw data.</p>
+<p>These concepts can be further understood by considering the probability model for a simple regression</p>
+<div class="math notranslate nohighlight">
+\[
+y_{i} \sim \mathcal{N}(\beta_{0} + \beta_{1}x_{i}, \sigma)
+\]</div>
+<p>Taking the example from <a class="reference internal" href="#simple-fig"><span class="std std-numref">Fig. 4</span></a>, each value of <code class="docutils literal notranslate"><span class="pre">Lot</span> <span class="pre">Size</span></code> is therefore associated with a normal distribution of values for <code class="docutils literal notranslate"><span class="pre">Hours</span></code> where the means sit along the population regression line. An illustration of this concept is given in <a class="reference internal" href="#simple-prob-fig"><span class="std std-numref">Fig. 5</span></a>.</p>
+<figure class="align-default" id="simple-prob-fig">
+<a class="reference internal image-reference" href="_images/simple-reg-prob.gif"><img alt="_images/simple-reg-prob.gif" src="_images/simple-reg-prob.gif" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Illustration of the simple regression normal probability model. The operator <span class="math notranslate nohighlight">\(E(Y)\)</span> indicates the <em>expected</em> value of the outcome variable which, for a normal distribution, is equivalent to the mean.</span><a class="headerlink" href="#simple-prob-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The standard deviation of these normal distributions is given by <span class="math notranslate nohighlight">\(\sigma\)</span> and reflects how widely spread the data are around the regression line. There is therefore a direct connection between the width of the assumed probability distributions and the model errors. As such, for each value of <code class="docutils literal notranslate"><span class="pre">Lot</span> <span class="pre">Size</span></code>, we expect there to be a normal distribution of errors, spread equally above and below the line, with most errors close to the line and fewer further away. As such, the simple regression model can also be expressed as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-y_{i} &amp;\sim \mathcal{N}(\mu_{i},\sigma) \\
-\mu_{i} &amp;= \beta_{0} + \beta_{1}x_{i1} + \beta_{2}x_{i2} + \dots + \beta_{k}x_{ik}
+y_{i} &amp;= \beta_{0} + \beta_{1}x_{i} + \epsilon_{i} \\
+\epsilon_{i} &amp;\sim \mathcal{N}(0,\sigma)
 \end{align}
 \end{split}\]</div>
-<p>Conceptually, this is the same as simple regression, except for a few details. Firstly, rather than a regression line this model estimates a regression plane in <span class="math notranslate nohighlight">\(k\)</span>-dimensional space. For instance, if we have 2 predictor variables then <span class="math notranslate nohighlight">\(k=2\)</span> and we can visualise the regression model as shown below</p>
+<p>Remembering that this probability model represents the <em>population</em>, the aim of a simple regression analysis is to use a <em>sample</em> to estimate both the <em>mean</em> and <em>variance</em> of the population distribution. As the mean depends upon the parameters <span class="math notranslate nohighlight">\(\beta_{0}\)</span> and <span class="math notranslate nohighlight">\(\beta_{1}\)</span>, these must also be estimated from the sample. Finding the line that best fits the data will result in estimates for <span class="math notranslate nohighlight">\(\beta_{0}\)</span> and <span class="math notranslate nohighlight">\(\beta_{1}\)</span>. The errors resulting from this fit can then be used to estimate <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<p>Once the parameters are estimated, hypothesis testing can be used to determine whether the null hypotheses</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\mathcal{H}_{0}:&amp; \beta_{0} = 0 \\
+\mathcal{H}_{0}:&amp; \beta_{1} = 0
+\end{align}
+\end{split}\]</div>
+<p>can be rejected. Usually, the test on <span class="math notranslate nohighlight">\(\beta_{1}\)</span> is of most interest because a slope of 0 is indicative of <em>no</em> relationship between the outcome and predictor variables. If significant, we would assume some non-zero relationship is present in the population and can interpret what the magnitude of <span class="math notranslate nohighlight">\(\hat{\beta}_{1}\)</span> tells us about the relationship under study. This is often in the context of using the simple regression model to <em>predict</em> the outcome using the values of the predictor. For the example above, this would result in being able to predict <code class="docutils literal notranslate"><span class="pre">Hours</span></code> by only knowing the value of <code class="docutils literal notranslate"><span class="pre">Lot</span> <span class="pre">Size</span></code>, allowing the manager to determine if more or fewer workers need to be hired as production demands are scaled up or down.</p>
+<div class="tip admonition">
+<p class="admonition-title">Randomness of the errors</p>
+<p>One of the more confusing aspects of statistical models is that they can be written in mutliple equivalent ways. For instance, for simple regression, the probability model can be written as either</p>
+<div class="math notranslate nohighlight">
+\[
+y_{i} \sim \mathcal{N}\left(\beta_{0} + \beta_{1}x_{i},\sigma\right)
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+y_{i} &amp;= \beta_{0} + \beta_{1}x_{i} + \epsilon_{i} \\
+\epsilon_{i} &amp;\sim \mathcal{N}(0,\sigma)
+\end{align}
+\end{split}\]</div>
+<p>Although the first form may be more intuitive, the second form is insightful in terms of the principles of these models. Recall that we are assuming that there is some <em>constant</em> effect that runs through all our observations of a particular phenomena. Also recall that we assume that the reason we do not observe the same value every time is because we are measuring a <em>random process</em> that is subject to measurement error. As such, each measurement we take is the sum of our constant effect of interest and random perturbations. This structure is then reflected in the statistical model, as the mean of the assumed distribution is considered the <em>constant</em> effect and the errors are considered the <em>random</em> deflections. As such, the <em>errors</em> are the element that creates randomness and thus are the <em>random variable</em> component of our measurements. In statistical parlance, this is the distinction between <em>fixed-effects</em> and <em>random-effects</em>. Fixed-effects are associated with the mean of the assumed probability distribution, whereas random-effects are associated with random perturbations and thus the <em>variance</em> of the measurements.</p>
+</div>
+</section>
+<section id="multiple-regression">
+<h3>Multiple Regression<a class="headerlink" href="#multiple-regression" title="Permalink to this heading">#</a></h3>
+<p>Expanding the simple regression model to contain <em>multiple</em> predictor variables produces the multiple regression model. As such, the multiple regression model with <span class="math notranslate nohighlight">\(k\)</span> predictor variables is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+y_{i} &amp;= \beta_{0} + \beta_{1}x_{i1} + \beta_{2}x_{i2} + \dots + \beta_{k}x_{ik} + \epsilon_{i} \\
+&amp;= \beta_{0} + \sum_{j=1}^{k} \beta_{j}x_{ij} + \epsilon_{i}
+\end{align}
+\end{split}\]</div>
+<p>where we usually assume a normal probability model of the form</p>
+<div class="math notranslate nohighlight">
+\[
+y_{i} \sim \mathcal{N}\left(\beta_{0} + \sum_{j=1}^{k} \beta_{j}x_{ij},\sigma\right)
+\]</div>
+<p>which can also be expressed as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+y_{i} &amp;= \beta_{0} + \sum_{j=1}^{k} \beta_{j}x_{ij} + \epsilon_{i} \\
+\epsilon_{i} &amp;\sim \mathcal{N}\left(0,\sigma\right)
+\end{align}
+\end{split}\]</div>
+<p>Conceptually, much of multiple regression is the same as simple regression, except for a few details. Firstly, rather than a regression line this model estimates a regression <em>plane</em> in <span class="math notranslate nohighlight">\(k\)</span>-dimensional space. For instance, if <span class="math notranslate nohighlight">\(k=2\)</span> then the model can be visualised as shown in <a class="reference internal" href="#plane-fig"><span class="std std-numref">Fig. 6</span></a></p>
 <figure class="align-default" id="plane-fig">
 <a class="reference internal image-reference" href="_images/reg-plane.png"><img alt="_images/reg-plane.png" src="_images/reg-plane.png" style="width: 600px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Illustration of how a multiple regression model with <span class="math notranslate nohighlight">\(k\)</span> predictors forms a regression <em>plane</em> through <span class="math notranslate nohighlight">\(k\)</span>-dimensional space.</span><a class="headerlink" href="#plane-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Illustration of how a multiple regression model with <span class="math notranslate nohighlight">\(k\)</span> predictors forms a regression <em>plane</em> through <span class="math notranslate nohighlight">\(k\)</span>-dimensional space.</span><a class="headerlink" href="#plane-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Obviously when <span class="math notranslate nohighlight">\(k &gt; 2\)</span> this becomes impossible to visualise, but the principle stays the same. So on this basis, the means of our assumed normal distributions become points on a plane in k-dimensional space, rather than points on the regression line. The individual regression slopes for each predictor are given by the edges of this plane. Importantly, these slopes are not the same as fitting a simple regression model to each predictor separately. The coefficients represent the effect of each predictor after taking all other predictors into account. This is an important point, because adding more predictors or changing the predictors will change all the coefficients. Many modelling decisions we make are built on this fact.</p>
-<p>In terms of the GLM, the important point is that the GLM is simply multiple regression written in matrix notation. If you understand multiple regression, then you understand the GLM. The differences are largely notational, but beyond that the methods are exactly the same. The use of multiple regression as a general system for data analysis has long been used by statisticians, but it has taken time for other branches of science to catch up. For instance, Jacob Cohen wrote about this back in 1968, but it still has not completely caught on in Experimental Psychology. The usefulness of this approach is that we can use a single framework to define different kinds of statistical models, rather than treating them as separate entities. For instance, although regression and ANOVA models are usually taught separately, they can both be specified within the GLM framework. This flexibility is precisely why the GLM has been adopted as the main system for analysing neuroimaging data.</p>
-<p>In terms of writing multiple regression in matrix notation, we start with the observation that there are always <span class="math notranslate nohighlight">\(n\)</span> regression equations (one for each data point)</p>
+<p>The means of the assumed normal distributions are no longer points along a regression line, rather they become points on a plane in <span class="math notranslate nohighlight">\(k\)</span>-dimensional space. The individual regression slopes for each predictor <span class="math notranslate nohighlight">\(\left(\beta_{j}\right)\)</span> are given by the <em>edges</em> of this plane (where <span class="math notranslate nohighlight">\(j = 1,\dots,k\)</span>). Importantly, these slopes are not the same as fitting a simple regression model to each predictor separately. The slope coefficients represent the effect of each predictor after taking all other predictors into account. This means that adding or altering the predictors will change <em>all</em> the parameter estimates. This is an important point because many statistical modelling decisions are built upon this fact. For instance, the notion of <em>controlling</em> for the effect of a variable is based directly upon this behaviour.</p>
+<p>Despite these differences, the multiple regression model proceeds in much the same fashion as simple regression. The individual parameters of the mean function can be estimated to produce a single estimate for the intercept <span class="math notranslate nohighlight">\(\left(\beta_{0}\right)\)</span> and <span class="math notranslate nohighlight">\(k\)</span> estimates for the slopes <span class="math notranslate nohighlight">\(\left(\beta_{1},\dots,\beta_{k}\right)\)</span>. Estimation of the variance again proceeds using the errors, which now represent vertical distances from the regression <em>plane</em> to the raw data. Hypothesis tests can then be performed on each of the estimates to determine which of the <span class="math notranslate nohighlight">\(k\)</span> variables appears to show a significant non-zero relationship with the outcome. This involves testing null hypotheses of the form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\mathcal{H}_{0}:&amp; \beta_{0} = 0 \\
+\mathcal{H}_{0}:&amp; \beta_{1} = 0 \\
+\vdots \\
+\mathcal{H}_{0}:&amp; \beta_{k} = 0
+\end{align}
+\end{split}\]</div>
+<p>Much like simple regression, the general aim is the accurate <em>prediction</em> of the outcome, this time using value of <em>multiple</em> variables. For instance, the manager of the production line may enhance their model of <code class="docutils literal notranslate"><span class="pre">Hours</span></code> by also considering <code class="docutils literal notranslate"><span class="pre">Wage</span></code> and <code class="docutils literal notranslate"><span class="pre">Age</span></code> of the workers, alongside <code class="docutils literal notranslate"><span class="pre">Lot</span> <span class="pre">Size</span></code>. This may allow for a more accurate prediction of <code class="docutils literal notranslate"><span class="pre">Hours</span></code>, as well as allowing the manager to determine which factor is the most influential and where the focus should be when considering how to adapt to changes in production.</p>
+</section>
+<section id="multiple-regression-in-matrix-form">
+<h3>Multiple Regression in Matrix Form<a class="headerlink" href="#multiple-regression-in-matrix-form" title="Permalink to this heading">#</a></h3>
+<p>Now that we have discussed both <em>simple</em> and <em>multiple</em> regression, we can return to the topic of the GLM. The most important point to understand is that the GLM is simply <em>multiple regression in matrix form</em>. As such, if you understand multiple regression, then you already understand the GLM. The fact that there is a different term to refer to the matrix-variant of multiple regression is largely historical, as discussed in the box below.</p>
+<div class="tip admonition">
+<p class="admonition-title">The history of the GLM</p>
+<p>Historically, statistical analyses could be categorised as either <em>regression</em> methods or <em>analysis of variance</em> (ANOVA) methods. The distinction was that regression models sought to estimate the relationships between mutliple continuous measurements as a means of prediction, whereas ANOVA models sought to investigate group differences resulting from experimental manipulations. As such, regression was more related to observational studies, whereas ANOVA was associated with designed experiments. However, it was recognised in the 1950s that these two methods could be combined, meaning that an ANOVA model could be specified using mutliple regression. Since this point, the equivelance of these methods has been well-recognised, though regression and ANOVA are still often taught in isolation. The use of the term <em>General Linear Model</em> is usually reserved for the specific matrix-based framework using to specify both regression and ANOVA models, whereas the terms <em>regression</em> and <em>ANOVA</em> are typically used in reference to the more historical non-matrix forms of the same analyses.</p>
+</div>
+<p>In terms of writing multiple regression in matrix notation, we start with the observation that there are always <span class="math notranslate nohighlight">\(n\)</span> regression equations, one for each data point</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
@@ -427,7 +525,7 @@ y_{3} &amp;= \beta_{0} + \beta_{1}x_{31} + \beta_{2}x_{32} + \dots + \beta_{k}x_
 y_{n} &amp;= \beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + \dots + \beta_{k}x_{nk} + \epsilon_{n}
 \end{align}
 \end{split}\]</div>
-<p>Notice how the values of the outcome variable, predictor variables and errors are different for each equation, but that the coefficients are the same for each equation. This indicates that the coefficients represents something that is consistent across all our data points, and thus provide a means of condensing our data down into a small number of values. Because the regression equations represent a system of linear equations, we know we can write them as vectors and matrices. Importantly, we can separate the predictor variables from the coefficients to give the following structure</p>
+<p>Because these regression equations represent a system of linear equations, we know we can write them as vectors and matrices. Importantly, we can separate the predictor variables from the coefficients to give the following structure</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{bmatrix}
@@ -461,16 +559,22 @@ y_{n}
 \epsilon_{n}
 \end{bmatrix}
 \end{split}\]</div>
-<p>which we can write shorthand as</p>
+<p>This can be written in shorthand as</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}
 \]</div>
-<p>This is probably the most important equation you will see on this course. It encapsulates the entire structure of our data analysis and is something you should become intimately familiar with during this module. Y represents the data vector, containing the values of our outcome variable. X represents the design matrix, containing each of our predictor variables as columns. β represnts the vector of model coefficients/parameters and ε represents the vector of errors.</p>
-<p>The important part here is to recognise how multiplying the design matrix by the parameter vector recreates the n regression equations. The values of these equations give the predicted value of Y, which is the point on the regression plane for that particular combination of predictor variables.</p>
+<p>This is probably the most important equation you will see on this course. It encapsulates the entire structure of our data analysis and is something you will become intimately familiar with during this module. To make this structure clear</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> represents the <em>data vector</em> containing the values of the outcome variable</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{X}\)</span> represents the <em>design matrix</em> containing each of the predictor variables as columns</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> represents the vector of <em>model parameters</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> represents the vector of <em>errors</em></p></li>
+</ul>
+<p>Importantly, we need to recognise how multiplying <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> recreates the <span class="math notranslate nohighlight">\(n\)</span> regression equations.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\hat{\mathbf{Y}} = \mathbf{X}\boldsymbol{\beta} = 
+\mathbf{X}\boldsymbol{\beta} = 
 \begin{bmatrix}
 1      &amp; x_{11} &amp; x_{12}  &amp; \dots  &amp; x_{1k} \\
 1      &amp; x_{21} &amp; x_{22}  &amp; \dots  &amp; x_{2k} \\
@@ -493,20 +597,19 @@ y_{n}
 \vdots  \\
 \beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + \dots  + \beta_{k}x_{nk}
 \end{bmatrix}
+= \hat{\mathbf{Y}
 \end{split}\]</div>
-<p>So another way to look at the GLM is as a model plus error</p>
+<p>These equations produce the <em>predicted</em> values from the model <span class="math notranslate nohighlight">\(\left(\hat{\mathbf{Y}}\right)\)</span>. As such, another way to look at the GLM is as a <em>prediction</em> plus <em>error</em></p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{alignat*}{3}
-\hat{\mathbf{Y}} &amp;= \mathbf{X}\boldsymbol{\beta} &amp;&amp;+ \boldsymbol{\epsilon} \\
-\underset{\text{Data}}{\hphantom{\mathbf{Y}}} &amp;= \underset{\text{Model}}{\hat{\mathbf{Y}}} &amp;&amp;+ \underset{\text{Error}}{\boldsymbol{\epsilon}}
-\end{alignat*}
-\end{split}\]</div>
-<p>Do not worry at this stage if this all seems a bit abstract. In the next section, we will apply all this theory to a real dataset to see how it works.</p>
+\[
+\underset{\text{Data}}{\mathbf{Y}} = \underset{\text{Prediction}}{\hat{\mathbf{Y}}} + \underset{\text{Error}}{\boldsymbol{\epsilon}}
+\]</div>
+<p>where the nature of the prediction depends upon the form of the design matrix.</p>
+</section>
 </section>
 <section id="building-the-design-matrix">
 <h2>Building the Design Matrix<a class="headerlink" href="#building-the-design-matrix" title="Permalink to this heading">#</a></h2>
-<p>At the core of the GLM is the structure of the design matrix. This is the part of the GLM that changes from analysis-to-analysis and is the part that defines different models of our data. In fact the general bit of the GLM is a reference to its ability to accommodate different analyses, simply through the specification of different design matrices. As we will come to see, SPM visualises the design matrix for us as a means of communicating the model that we are fitting to our data. This is an indication of how important this part of the GLM is and thus it is important to understand how we can structure it to accommodate different types of predictor variables.</p>
+<p>At the core of the GLM is the structure of the design matrix. This is the part of the GLM that changes from analysis-to-analysis and is the element that defines different models of our data. The <em>general</em> bit of the GLM is a reference to the fact that including continuous predictors in the design matrix will produce a regression model, whereas including categorical predictors will produce an ANOVA model. As we will come to see, the design matrix is such a key part of the GLM that SPM chooses to visualise this element as a means of communicating the form of GLM being used to model our fMRI data. As such, understanding how the design matrix can be structured is important. Given that the design matrix can contain a mixture of <em>continuous</em> and <em>categorical</em> variables, we must therefore understand how these different types of predictors can be accommodated.</p>
 <section id="continuous-predictor-variables">
 <h3>Continuous Predictor Variables<a class="headerlink" href="#continuous-predictor-variables" title="Permalink to this heading">#</a></h3>
 <p>Any variable that is numeric and represents some sort of measurement is classified as a continuous predictor variable. This includes any quantifiable phenomena such as IQ, reaction time, score on a test, age, weight etc. These types of predictor variables are straightforward to use within the GLM because we simply add them verbatim to the design matrix as columns. As such, they do not require any form of special treatment to be used. We will see examples of these types of variables in the next section, when we look at an example GLM using some real-world data.</p>
@@ -593,18 +696,18 @@ y_{n}
 </section>
 <section id="interpreting-the-parameters">
 <h2>Interpreting the Parameters<a class="headerlink" href="#interpreting-the-parameters" title="Permalink to this heading">#</a></h2>
-<p>Once we have the parameter estimates, our aim is to try and interpret what they mean, given that their values represents important summaries of the effects in our dataset. If the variable associated with a parameter estimate is a continuous variable, we would interpret the value as a regression slope, telling us how much our outcome variable is predicted to change for a unit increase in the predictor variable. For example, a regression slope with a value of -5.344 is visualised in <a class="reference internal" href="#continuous-fig"><span class="std std-numref">Fig. 4</span></a></p>
+<p>Once we have the parameter estimates, our aim is to try and interpret what they mean, given that their values represents important summaries of the effects in our dataset. If the variable associated with a parameter estimate is a continuous variable, we would interpret the value as a regression slope, telling us how much our outcome variable is predicted to change for a unit increase in the predictor variable. For example, a regression slope with a value of -5.344 is visualised in <a class="reference internal" href="#continuous-fig"><span class="std std-numref">Fig. 7</span></a></p>
 <figure class="align-default" id="continuous-fig">
 <a class="reference internal image-reference" href="_images/reg-continuous.png"><img alt="_images/reg-continuous.png" src="_images/reg-continuous.png" style="width: 500px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Example of the regression slope associated with a continuous predictor variable and a parameter estimate of <span class="math notranslate nohighlight">\(\beta_{1}=-5.344\)</span>.</span><a class="headerlink" href="#continuous-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Example of the regression slope associated with a continuous predictor variable and a parameter estimate of <span class="math notranslate nohighlight">\(\beta_{1}=-5.344\)</span>.</span><a class="headerlink" href="#continuous-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>This can be interpreted as a unit increase in the value of the predictor variable being associated with a decrease in the value of the outcome variable of 5.344. By comparison, if the variable associated with a parameter estimate is a categorical variable, we would interpret the value as a mean difference. To see why, consider what happens when we fit a regression slope to a dummy variable with a value of 0 or 1</p>
 <figure class="align-default" id="dummy-fig">
 <a class="reference internal image-reference" href="_images/reg-dummy.png"><img alt="_images/reg-dummy.png" src="_images/reg-dummy.png" style="width: 500px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Example of the regression slope associated with a categorical predictor variable and a parameter estimate of <span class="math notranslate nohighlight">\(\beta_{1}=7.940\)</span>.</span><a class="headerlink" href="#dummy-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Example of the regression slope associated with a categorical predictor variable and a parameter estimate of <span class="math notranslate nohighlight">\(\beta_{1}=7.940\)</span>.</span><a class="headerlink" href="#dummy-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>So we can see that the model is still fitting a regression slope, but one that goes from the mean of one category to the mean of the other. In this example, the slope has a value of 7.94 which tells us the mean difference between the categories. The intercept of the model is the mean of the group coded as 0 and a unit change simply refers to the change from one group to the other. So although this is still the same interpretation as any other regression slope, it is useful to think of the slopes from dummy variables representing mean differences.</p>
@@ -689,7 +792,12 @@ y_{n}
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-linear-model-framework">The General Linear Model Framework</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-linear-model-framework">The General Linear Model Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-regression">Simple Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression">Multiple Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-matrix-form">Multiple Regression in Matrix Form</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-design-matrix">Building the Design Matrix</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-predictor-variables">Continuous Predictor Variables</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-predictor-variables">Categorical Predictor Variables</a></li>
