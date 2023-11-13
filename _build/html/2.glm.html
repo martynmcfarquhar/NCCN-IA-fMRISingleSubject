@@ -382,8 +382,13 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-parameters">Estimating the Parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-parameters">Interpreting the Parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-parameters">Interpreting the Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimates-for-continuous-predictors">Parameter Estimates for Continuous Predictors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimates-for-categorical-predictors">Parameter Estimates for Categorical Predictors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-errors-of-the-estimates">Standard Errors of the Estimates</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -609,14 +614,14 @@ y_{n}
 </section>
 <section id="building-the-design-matrix">
 <h2>Building the Design Matrix<a class="headerlink" href="#building-the-design-matrix" title="Permalink to this heading">#</a></h2>
-<p>At the core of the GLM is the structure of the design matrix. This is the part of the GLM that changes from analysis-to-analysis and is the element that defines different models of our data. The <em>general</em> bit of the GLM is a reference to the fact that including continuous predictors in the design matrix will produce a regression model, whereas including categorical predictors will produce an ANOVA model. As we will come to see, the design matrix is such a key part of the GLM that SPM chooses to visualise this element as a means of communicating the form of GLM being used to model our fMRI data. As such, understanding how the design matrix can be structured is important. Given that the design matrix can contain a mixture of <em>continuous</em> and <em>categorical</em> variables, we must therefore understand how these different types of predictors can be accommodated.</p>
+<p>At the core of the GLM is the structure of the design matrix. This is the part of the GLM that changes from analysis-to-analysis and is the element that defines different models of our data. The <em>general</em> bit of the GLM is a reference to the fact that including continuous predictors in the design matrix will produce a regression model, whereas including categorical predictors will produce an ANOVA model. As we will come to see, the design matrix is such a key part of the GLM that SPM chooses to <em>visualise</em> this element as a means of communicating the form of GLM being used to model the fMRI data. As such, understanding how the design matrix is structured is vital to understanding the GLM.</p>
 <section id="continuous-predictor-variables">
 <h3>Continuous Predictor Variables<a class="headerlink" href="#continuous-predictor-variables" title="Permalink to this heading">#</a></h3>
-<p>Any variable that is numeric and represents some sort of measurement is classified as a continuous predictor variable. This includes any quantifiable phenomena such as IQ, reaction time, score on a test, age, weight etc. These types of predictor variables are straightforward to use within the GLM because we simply add them verbatim to the design matrix as columns. As such, they do not require any form of special treatment to be used. We will see examples of these types of variables in the next section, when we look at an example GLM using some real-world data.</p>
+<p>Any variable that is <em>numeric</em> and represents some sort of <em>measurement</em> is classified as a <em>continuous</em> predictor variable. For instance, measurements such as IQ, reaction time, test score, age or weight are examples of continuous predictor variables. These types of variables enter the design matrix verbatim as column vectors. As such, they do not require any form of special treatment, as we will see in the worked example later in the lesson.</p>
 </section>
 <section id="categorical-predictor-variables">
 <h3>Categorical Predictor Variables<a class="headerlink" href="#categorical-predictor-variables" title="Permalink to this heading">#</a></h3>
-<p>Any variable that represents a form of grouping or category is classified as a categorical variable. This could include variables such as sex, patient group, blood type, ethnicity etc. Compared with continuous variables, categorical predictor variables are more complex to use with the GLM. Fundamentally, what we have to do is to turn these categories into numbers in order to put them in the design matrix. The way we do this is to form dummy variables. These are variables that have a value of 1 or 0 depending on the category. For instance, if the categories were male or female, we could assign values like so</p>
+<p>Any variable that represents a form of <em>grouping</em> or <em>category</em> is classified as a <em>categorical</em> variable. For instance, categories such as diagnostic group, blood type or ethnicity are examples of categorical predictor variables. Compared with continuous variables, categorical variables are more complex to use with the GLM. Fundamentally, the category labels must be converted into numbers. The way this is done is by forming what are known as <em>dummy variables</em>. These are variables that conatin either a value of 1 or 0 depending on the category. For instance, if the categories were <em>patient</em> or <em>control</em>, the dummy variable values could be assigned like so</p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Category</p></th>
@@ -632,7 +637,7 @@ y_{n}
 </tr>
 </tbody>
 </table>
-<p>If we have a variable with more than two categories, we can include more dummy variables like so</p>
+<p>If there is a variable with more than two categories, more than one dummy variable can be used</p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Blood Type</p></th>
@@ -664,7 +669,7 @@ y_{n}
 </tr>
 </tbody>
 </table>
-<p>Notice how we always have one fewer dummy variable than the number of categories. So we only need 1 dummy variable to represent the 2 categories of male or female, and we only need 3 dummy variables to represent the 4 categories of blood type. As an example, we can see a design matrix below that contains a dummy variable representing diagnosis, where the first 3 subjects are patients and the last 3 are controls.</p>
+<p>In both cases, notice how there is always one fewer dummy variable than the number of categories. As an illustration, consider the design matrix below containing a dummy variable representing diagnosis, where the first 3 subjects are patients and the last 3 are controls.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \mathbf{X} = 
@@ -677,33 +682,49 @@ y_{n}
 1 &amp; 0
 \end{bmatrix}
 \end{split}\]</div>
-<p>Any row that contains a 1 in the second column indicates that subject is female whereas any row that contains a 0 in the second column indicates that subject is male. We are going to see dummy variables used a lot and so do not worry if this concept is not clear yet. We will see plenty of examples as we press forward.</p>
 </section>
 </section>
 <section id="estimating-the-parameters">
 <h2>Estimating the Parameters<a class="headerlink" href="#estimating-the-parameters" title="Permalink to this heading">#</a></h2>
-<p>Once we have constructed our design matrix, we have a fully-formed probability model of the form</p>
+<p>Once the design matrix is formed, the probability model of the GLM is given by</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{Y} \sim \mathcal{N}\left(\mathbf{X}\boldsymbol{\beta},\sigma\mathbf{I}\right)
+\mathbf{Y}_{i} \sim \mathcal{N}\left(\mathbf{X}_{i}\boldsymbol{\beta},\sigma\right)
 \]</div>
-<p>The next step is therefore to use maximum likelihood methods to estimate the model parameters. The equations that are derived from the method of maximum likelihood can be written in matrix terms to give a single equation that will simultaneously estimate values for every parameter. This equation is given by</p>
+<p>The next step is therefore to use maximum likelihood methods to estimate the parameters. Although beyond the scope of this lesson to discuss in more detail, maximum likelihood can be used to derive a single equation that estimates the regression plane that best fits the data. In this context, “best fits” is equivalent to minimising the errors, such that the estimated parameters are those that minimises the vertical distances between the regression plane and the raw data. The equation that achieves this is given by</p>
 <div class="math notranslate nohighlight">
 \[
 \hat{\boldsymbol{\beta}} = \left(\mathbf{X}^{\prime}\mathbf{X}\right)^{-1}\mathbf{X}^{\prime}\mathbf{Y}
 \]</div>
-<p>and is notable for its use of a matrix inverse. As you may remember from the Computational Tools lesson in Functional Neuroanatomy, inverting a matrix is a tricky business because an inverse may not always exist. This tells us something about the limitations of the GLM, namely that not every model we may want to use will be estimable. This is a thorny issue, but one which is thankfully rarely a concern when using SPM.</p>
+<p>which is notable for its reliance on a matrix <em>inverse</em>. Recall that not all matrices are invertible, meaning that not every model specified in the design matrix will be estimable. This is more of an issue with other fMRI software, but is rarely a problem with SPM given its use of a <em>pseudo-inverse</em> for solving this equation. This approach comes with its own limitations, but does mean that all models should be estimable and we are not limited in terms of the form that the design matrix can take.</p>
+<p>Once the value of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> is determined, the value of <span class="math notranslate nohighlight">\(\sigma\)</span> can be derived from the errors. The error vector <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> is formed by a simple subtraction</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\epsilon} = \mathbf{Y} - \mathbf{X}\hat{\boldsymbol{\beta}}
+\]</div>
+<p>and can then be used to derive the model variance using</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\sigma}^{2} = \frac{\boldsymbol{\epsilon}^{\prime}\boldsymbol{\epsilon}}{n-k}
+\]</div>
+<p>This is simply the sum of squared errors, the square-root of which provides the estimate of the standard deviation of the probability model distribution.</p>
 </section>
 <section id="interpreting-the-parameters">
 <h2>Interpreting the Parameters<a class="headerlink" href="#interpreting-the-parameters" title="Permalink to this heading">#</a></h2>
-<p>Once we have the parameter estimates, our aim is to try and interpret what they mean, given that their values represents important summaries of the effects in our dataset. If the variable associated with a parameter estimate is a continuous variable, we would interpret the value as a regression slope, telling us how much our outcome variable is predicted to change for a unit increase in the predictor variable. For example, a regression slope with a value of -5.344 is visualised in <a class="reference internal" href="#continuous-fig"><span class="std std-numref">Fig. 7</span></a></p>
+<p>Once the parameters have been estimated, interest turns to interpreting what they <em>mean</em>. Remembering that the parameters represent summaries of the effects and relationships in the dataset, knowing how to interpret their value is of important in order to reach conclusions about the phenomena of interest.</p>
+<section id="parameter-estimates-for-continuous-predictors">
+<h3>Parameter Estimates for Continuous Predictors<a class="headerlink" href="#parameter-estimates-for-continuous-predictors" title="Permalink to this heading">#</a></h3>
+<p>If the variable associated with a parameter estimate is continuous, the parameter is interpreted as the value as a <em>regression slope</em>. For a unit change in the predictor variable, the parameter indicates how much the outcome variable is predicted to change. For example, a model containing a continuous predictor with a parameter estimate of <span class="math notranslate nohighlight">\(\hat{\beta}_{1} = -5.344\)</span> is visualised in <a class="reference internal" href="#continuous-fig"><span class="std std-numref">Fig. 7</span></a>. This would be interpreted as the outcome variable decreasing by 5.344 for each unit increase of the predictor.</p>
 <figure class="align-default" id="continuous-fig">
 <a class="reference internal image-reference" href="_images/reg-continuous.png"><img alt="_images/reg-continuous.png" src="_images/reg-continuous.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 7 </span><span class="caption-text">Example of the regression slope associated with a continuous predictor variable and a parameter estimate of <span class="math notranslate nohighlight">\(\beta_{1}=-5.344\)</span>.</span><a class="headerlink" href="#continuous-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>This can be interpreted as a unit increase in the value of the predictor variable being associated with a decrease in the value of the outcome variable of 5.344. By comparison, if the variable associated with a parameter estimate is a categorical variable, we would interpret the value as a mean difference. To see why, consider what happens when we fit a regression slope to a dummy variable with a value of 0 or 1</p>
+</section>
+<section id="parameter-estimates-for-categorical-predictors">
+<h3>Parameter Estimates for Categorical Predictors<a class="headerlink" href="#parameter-estimates-for-categorical-predictors" title="Permalink to this heading">#</a></h3>
+<p>If the variable associated with a parameter estimate is categorical, the parameter would be interpreted as a <em>mean difference</em>. To see why, consider what happens when we fit a regression slope to a dummy variable, as shown in <a class="reference internal" href="#dummy-fig"><span class="std std-numref">Fig. 8</span></a>. Notice how the slope begins at the mean of the group coded with a 0 and then ends at the mean of the group coded with a 1. A unit increase on a dummy variable is equivalent to changing the category from 0 to 1. This means that the regression slope is still interpreted in the same fashion as before, but in this context tells us the <em>mean difference</em> between the categories. The <em>intercept</em> of this model is therefore the mean of the group coded as 0, the slope is the mean difference and the sum of the intercept and slope gives the mean of the group coded as 1.</p>
 <figure class="align-default" id="dummy-fig">
 <a class="reference internal image-reference" href="_images/reg-dummy.png"><img alt="_images/reg-dummy.png" src="_images/reg-dummy.png" style="width: 500px;" /></a>
 <figcaption>
@@ -711,21 +732,25 @@ y_{n}
 </figcaption>
 </figure>
 <p>So we can see that the model is still fitting a regression slope, but one that goes from the mean of one category to the mean of the other. In this example, the slope has a value of 7.94 which tells us the mean difference between the categories. The intercept of the model is the mean of the group coded as 0 and a unit change simply refers to the change from one group to the other. So although this is still the same interpretation as any other regression slope, it is useful to think of the slopes from dummy variables representing mean differences.</p>
-<p>Although we can interpret the values of our parameter estimates, on their own this not enough because we also need to know how much we can trust these estimates. This is done by calculating the standard deviation of the sampling distribution of the estimates, known as the standard error. In the GLM, the standard errors of the parameter estimates can be calculated using the estimate of the model variance</p>
-<div class="math notranslate nohighlight">
-\[
-\hat{\sigma}^{2} = \frac{\boldsymbol{\epsilon}^{\prime}\boldsymbol{\epsilon}}{n-p}
-\]</div>
-<p>which is the squared estimate of the standard deviation of the normal distribution we are using for our model. Here, n is the number of rows of X and p is the number of model parameters (the number of columns of X). This is then combined with the design matrix to produce a variance-covariance matrix</p>
+</section>
+<section id="standard-errors-of-the-estimates">
+<h3>Standard Errors of the Estimates<a class="headerlink" href="#standard-errors-of-the-estimates" title="Permalink to this heading">#</a></h3>
+<p>Although the values of the parameter estimates can be interpreted on their own, to perform statistical inference we also need some indication of how <em>variable</em> the estimates are. This is done by calculating the <em>standard error</em> for each parameter. In the GLM, the standard errors of the parameter estimates can be calculated by first constructing the <em>variance-covariance</em> matrix of the estimates</p>
 <div class="math notranslate nohighlight">
 \[
 \text{Cov}\left(\hat{\boldsymbol{\beta}}\right) = \hat{\sigma}^{2}\left(\mathbf{X}^{\prime}\mathbf{X}\right)^{-1}
 \]</div>
-<p>You do not need to worry too much about what this represents. The main point is just that the standard errors are taken as the square-root of the diagonal elements of this matrix.</p>
+<p>This is akin to a correlation matrix, with the variance of each estimate on the diagonal and the correlation (covariance) between the estimates on the off-diagonal. The standard errors can then be taken as the square-root of the diagonal elements of <span class="math notranslate nohighlight">\(\text{Cov}\left(\hat{\boldsymbol{\beta}}\right)\)</span>.</p>
 </section>
 <section id="inference">
-<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h2>
-<p>… Although this seems fairly straightforward, inference using neuroimaging data has some very specific challenges that we will pick up on next week.</p>
+<h3>Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h3>
+<p>The final step in using the GLM framework is to perform some sort of hypothesis test using the estimated parameter values. Typically, each estimate will be divided by its standard error to produce a <em>t</em>-statistics. For instance</p>
+<div class="math notranslate nohighlight">
+\[
+t = \frac{\hat{\beta}_{1}}{\text{SE}\left\{\hat{\beta}_{1}\right\}}
+\]</div>
+<p>This particular test statistic involves an implicit comparison of <span class="math notranslate nohighlight">\(\hat{\beta}_{1}\)</span> with a proposed population value of <span class="math notranslate nohighlight">\(\beta_{1} = 0\)</span>. In the context of a regression slope, the null hypothesis is therefore that there is no relationship between the outcome and predictor (i.e. the slope is <em>flat</em>). In the context of a mean difference, the null hypothesis is that there is no difference in the average value of the outcome variable between the groups (i.e. the means are <em>identical</em>). Decisions about whether the null hypothesis can be rejected can be taken by calculating the <em>p</em>-value associated with the calculated <em>t</em>-statistic via reference to the appropriate null distribution. As such, this element of the GLM is equivalent to performing inference on the results of both the simple and multiple regression models discussed earlier.</p>
+</section>
 </section>
 </section>
 
@@ -804,8 +829,13 @@ y_{n}
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-parameters">Estimating the Parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-parameters">Interpreting the Parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-parameters">Interpreting the Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimates-for-continuous-predictors">Parameter Estimates for Continuous Predictors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimates-for-categorical-predictors">Parameter Estimates for Categorical Predictors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-errors-of-the-estimates">Standard Errors of the Estimates</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
