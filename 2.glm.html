@@ -559,7 +559,7 @@ y_{n}
 \epsilon_{n}
 \end{bmatrix}
 \end{split}\]</div>
-<p>which we can write shorthand as</p>
+<p>This can be written in shorthand as</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}
@@ -574,7 +574,7 @@ y_{n}
 <p>Importantly, we need to recognise how multiplying <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> recreates the <span class="math notranslate nohighlight">\(n\)</span> regression equations.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\hat{\mathbf{Y}} = \mathbf{X}\boldsymbol{\beta} = 
+\mathbf{X}\boldsymbol{\beta} = 
 \begin{bmatrix}
 1      &amp; x_{11} &amp; x_{12}  &amp; \dots  &amp; x_{1k} \\
 1      &amp; x_{21} &amp; x_{22}  &amp; \dots  &amp; x_{2k} \\
@@ -597,17 +597,19 @@ y_{n}
 \vdots  \\
 \beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + \dots  + \beta_{k}x_{nk}
 \end{bmatrix}
+= \hat{\mathbf{Y}
 \end{split}\]</div>
-<p>These equations produce the <em>predicted</em> values from the model <span class="math notranslate nohighlight">\(\left(\hat{\mathbf{Y}}\right\)</span>. As such, another way to look at the GLM is as a <em>prediction</em> plus <em>error</em></p>
+<p>These equations produce the <em>predicted</em> values from the model <span class="math notranslate nohighlight">\(\left(\hat{\mathbf{Y}}\right)\)</span>. As such, another way to look at the GLM is as a <em>prediction</em> plus <em>error</em></p>
 <div class="math notranslate nohighlight">
 \[
 \underset{\text{Data}}{\mathbf{Y}} = \underset{\text{Prediction}}{\hat{\mathbf{Y}}} + \underset{\text{Error}}{\boldsymbol{\epsilon}}
 \]</div>
+<p>where the nature of the prediction depends upon the form of the design matrix.</p>
 </section>
 </section>
 <section id="building-the-design-matrix">
 <h2>Building the Design Matrix<a class="headerlink" href="#building-the-design-matrix" title="Permalink to this heading">#</a></h2>
-<p>At the core of the GLM is the structure of the design matrix. This is the part of the GLM that changes from analysis-to-analysis and is the part that defines different models of our data. In fact the general bit of the GLM is a reference to its ability to accommodate different analyses, simply through the specification of different design matrices. As we will come to see, SPM visualises the design matrix for us as a means of communicating the model that we are fitting to our data. This is an indication of how important this part of the GLM is and thus it is important to understand how we can structure it to accommodate different types of predictor variables.</p>
+<p>At the core of the GLM is the structure of the design matrix. This is the part of the GLM that changes from analysis-to-analysis and is the element that defines different models of our data. The <em>general</em> bit of the GLM is a reference to the fact that including continuous predictors in the design matrix will produce a regression model, whereas including categorical predictors will produce an ANOVA model. As we will come to see, the design matrix is such a key part of the GLM that SPM chooses to visualise this element as a means of communicating the form of GLM being used to model our fMRI data. As such, understanding how the design matrix can be structured is important. Given that the design matrix can contain a mixture of <em>continuous</em> and <em>categorical</em> variables, we must therefore understand how these different types of predictors can be accommodated.</p>
 <section id="continuous-predictor-variables">
 <h3>Continuous Predictor Variables<a class="headerlink" href="#continuous-predictor-variables" title="Permalink to this heading">#</a></h3>
 <p>Any variable that is numeric and represents some sort of measurement is classified as a continuous predictor variable. This includes any quantifiable phenomena such as IQ, reaction time, score on a test, age, weight etc. These types of predictor variables are straightforward to use within the GLM because we simply add them verbatim to the design matrix as columns. As such, they do not require any form of special treatment to be used. We will see examples of these types of variables in the next section, when we look at an example GLM using some real-world data.</p>

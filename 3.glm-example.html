@@ -787,40 +787,24 @@ Root Mean Squared Error: 1.26
 R-squared: 0.797,  Adjusted R-Squared: 0.493
 F-statistic vs. constant model: 2.62, p-value = 0.288</pre></body></html></div></div>
 </div>
-<p>We can use the returned <code class="docutils literal notranslate"><span class="pre">Model</span></code> object to create <em>added variable</em> plots to visualise the edges of the regression plane, defined by the parameter estimates. For <code class="docutils literal notranslate"><span class="pre">horsepower</span></code> we have</p>
+<p>We can use the returned <code class="docutils literal notranslate"><span class="pre">Model</span></code> object to create <em>added variable</em> plots to visualise the edges of the regression plane, defined by the parameter estimates.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">tiledlayout</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="nb">nexttile</span><span class="p">;</span>
+<span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="nb">nexttile</span><span class="p">;</span>
+<span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="nb">nexttile</span><span class="p">;</span>
+<span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/64de104ab28782fffcaf220cff156ec7b640d6213d59510a3fb668181a8daaff.png" src="_images/64de104ab28782fffcaf220cff156ec7b640d6213d59510a3fb668181a8daaff.png" />
+<img alt="_images/a04f522a1c38fc1e354a929fc9a718bb667fce4876e6a8895498db03f875d16d.png" src="_images/a04f522a1c38fc1e354a929fc9a718bb667fce4876e6a8895498db03f875d16d.png" />
 </div>
 </div>
-<p>For <code class="docutils literal notranslate"><span class="pre">weight</span></code> we have</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/06a3844b858c44b1b55424f941bee1f963e93305f66e4d450ba4fe3e5c6fe00c.png" src="_images/06a3844b858c44b1b55424f941bee1f963e93305f66e4d450ba4fe3e5c6fe00c.png" />
-</div>
-</div>
-<p>and for <code class="docutils literal notranslate"><span class="pre">transmission</span></code> we have</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/92020e000122c47c45e2161243a178741c31f818bf4ad8e01700a3b6458e8646.png" src="_images/92020e000122c47c45e2161243a178741c31f818bf4ad8e01700a3b6458e8646.png" />
-</div>
-</div>
-<p>Noting that this no longer appears to be a dummy variable because it has been <em>adjusted</em> for the presence of the other variables in the model. In all cases, the very wide confidence bands are a result of large uncertainty in the parameter estimates, due to the small sample size.</p>
+<p>Noting that <code class="docutils literal notranslate"><span class="pre">transmission</span></code> no longer appears as a dummy variable because it has been <em>adjusted</em> for the presence of the other variables in the model. In all cases, the very wide confidence bands are a result of large uncertainty in the parameter estimates, due to the small sample size.</p>
 </section>
 </section>
 
