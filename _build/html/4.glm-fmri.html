@@ -370,9 +370,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mass-univariate-framework">The Mass-univariate Framework</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-predictors-for-the-time-series">Creating Predictors for the Time Series</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-design-matrix">Visualising the Design Matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-and-regression-perspectives">Time Series and Regression Perspectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
 </ul>
             </nav>
         </div>
@@ -386,35 +388,124 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="using-the-glm-to-model-fmri-data">
 <h1>Using the GLM to Model fMRI Data<a class="headerlink" href="#using-the-glm-to-model-fmri-data" title="Permalink to this heading">#</a></h1>
-<p>So now we have seen how to use the GLM to estimate parameters and their uncertainty using non-imaging data, but how do we apply this to an fMRI dataset? Remember from previous lessons that we have focused on the fMRI time series at each voxel as our primary data of interest. In the context of the GLM, these time series represents our outcome variable. What about our predictor variables? Well, as we will see, we can create predictors for the change in signal based on the timing of our experimental conditions. So for each voxel we have a different outcome variable and the same set of predictors. The approach is then to loop through every voxel in the image, estimating the GLM for each time series separately. This approach is known as the mass-univariate framework, and was first introduced by Friston et al. (1994).
-The mass-univariate framework</p>
-<p>The mass-univariate approach to modelling fMRI data is fairly straightforward if you already understand the GLM. We build a design matrix of predictors that relate to our experimental conditions that we call X. We then use X to estimate the GLM at each voxel separately. So for voxel <span class="math notranslate nohighlight">\(\nu\)</span> we have</p>
+<p>We have now seen how to use the GLM as a tool to analyse non-imaging data. Now we need to take what we have learned so far and apply it to fMRI data. Remember from previous lessons that the primary data of interest is the fMRI time series at each voxel. In the context of the GLM, the time series from a single voxel forms the outcome vector <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span>. The approach is then to loop through every voxel in the image, estimating the GLM for each time series separately. This is known as the <em>mass-univariate</em> framework.</p>
+<section id="the-mass-univariate-framework">
+<h2>The Mass-univariate Framework<a class="headerlink" href="#the-mass-univariate-framework" title="Permalink to this heading">#</a></h2>
+<p>The mass-univariate approach to modelling fMRI data was first introduced by <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/hbm.460020402">Fristion <em>et al.</em> (1994)</a>. In brief, we build a <em>single</em> design matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> of predictors that code for changes in signal based on the timing of the experimental stimuli. We then use <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> to estimate the GLM at each voxel separately. For voxel <span class="math notranslate nohighlight">\(\nu\)</span>, the model is therefore</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{Y}_{\nu} = \mathbf{X}\boldsymbol{\beta}_{\nu} + \boldsymbol{\epsilon}_{\nu}
 \]</div>
-<p>so that the outcome variable, parameters and errors are unique to that voxel, but the design matrix is the same across all voxels. By doing this, we will end up with as many <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> vectors and <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> vectors as there are voxels. These values can be saved to images, as illustrated in <a class="reference internal" href="#param-img-fig"><span class="std std-numref">Fig. 9</span></a>. Typically SPM will not keep the images of the residuals in order to save space, but will keep the image of <span class="math notranslate nohighlight">\(\sigma^{2}_{\nu}\)</span> for later calculation of the standard errors.</p>
+<p>Notice that the outcome variable <span class="math notranslate nohighlight">\(\left(\mathbf{Y}_{\nu}\right)\)</span>, parameters <span class="math notranslate nohighlight">\(\left(\boldsymbol{\beta}_{\nu}\right)\)</span> and errors <span class="math notranslate nohighlight">\(\left(\boldsymbol{\epsilon}_{\nu}\right)\)</span> are unique to voxel <span class="math notranslate nohighlight">\(\nu\)</span>, but that the design matrix <span class="math notranslate nohighlight">\(\left(\mathbf{X}\right)\)</span> is the <em>same</em> across all voxels. After fitting the model at every voxel, we will have as many <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> vectors and <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> vectors as there are voxels. These values can be saved to images, as illustrated in <a class="reference internal" href="#param-img-fig"><span class="std std-numref">Fig. 9</span></a>. Thinking back to how we interpret the GLM parameters, an image of estimates associated with a <em>continuous</em> predictor variable will indicate the magnitude of a <em>regression slope</em> at each voxel. Similarly, an image of estimates associated with a <em>categorical</em> predictor variable will indicate the magnitude of a <em>mean difference</em> at each voxel. In both cases, brighter voxels mean larger estimates and darker voxels mean smaller estimates. Importantly, because these estimates can be positive or negative, those regions that are <em>darkest</em> or <em>brightest</em> are of most interest. Even before performing any sort of inferential procedure, notice how these images show interesting regional effects associated with the predictor variables.</p>
 <figure class="align-default" id="param-img-fig">
 <a class="reference internal image-reference" href="_images/param-images.png"><img alt="_images/param-images.png" src="_images/param-images.png" style="width: 800px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 9 </span><span class="caption-text">Illustration of how the parameter estimates from a mass-univariate GLM can be saved to images.</span><a class="headerlink" href="#param-img-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>It is important to take a moment and consider what these images are showing. If we remember the interpretation of the parameters from the GLM, a parameter estimate image associated with a continuous predictor variable will show us the magnitude of the regression slope at each voxel. Similarly, a parameter estimate image associated with a categorical predictor variable will show us the magnitude of the mean difference at each voxel. In both cases, brighter voxels mean larger estimates and darker voxels mean smaller estimates. Importantly, because these estimates can be positive or negative, those regions that are darkest or brightest are of most interest, with those regions that are grey representing estimates hovering around 0. Even before going any further we can see how these images show us interesting regional effects associated with our predictor variables.</p>
+</section>
 <section id="creating-predictors-for-the-time-series">
 <h2>Creating Predictors for the Time Series<a class="headerlink" href="#creating-predictors-for-the-time-series" title="Permalink to this heading">#</a></h2>
-<p>As indicated above, the mass-univariate approach depends upon forming a design matrix that can be used at each voxel to predict changes in the BOLD signal associated with our experimental conditions. The easiest way to do this is to use a dummy variable, where a value of 1 indicates the presence of an experimental stimulus and a value of 0 indicates its absence. To make this clear, imagine a very simple finger tapping experiment where the subject is instructed to tap their fingers for 7 seconds followed by resting for 7 seconds. We repeat this on-off pattern 8 times. In order to code this as a dummy variable, we can use a value of 0 to represent periods of rest and a value of 1 to indicate periods of tapping. Any region of the brain that follows this on-off pattern we assume is related to the action of finger tapping. For instance, consider the illustration in <a class="reference internal" href="#timeseries-dummy-fig"><span class="std std-numref">Fig. 10</span></a> showing a timeseries from the motor cortex on the left and a dummy variable for the tapping conditions on the right. This type of dummy variable forms what is known as a block design, which we will learn more about in the Experimental Design and Optimisation module. You may also see this type of dummy variable referred to as a box-car regressor.</p>
+<p>As indicated above, the mass-univariate approach depends upon forming a single design matrix that can be used at each voxel to predict changes in the BOLD signal associated with the experimental stimuli. The easiest approach to code such changes is to specify a dummy variable, where a value of 1 indicates the presence of an experimental stimulus and a value of 0 indicates its absence. To make this clear, imagine a simple finger tapping experiment where the subject taps their fingers for 5 seconds and then rests for 5 seconds. To code this pattern as a dummy variable, we use a value of 0 to represent periods of rest and a value of 1 to indicate periods of tapping. Any region of the brain that follows this on-off pattern is assumed to be involved in the action of finger tapping. For instance, consider the illustration in <a class="reference internal" href="#timeseries-dummy-fig"><span class="std std-numref">Fig. 10</span></a>. This shows a time series from the motor cortex on the left and a dummy variable for the tapping conditions on the right.</p>
 <figure class="align-default" id="timeseries-dummy-fig">
 <a class="reference internal image-reference" href="_images/time-series-and-dummy.png"><img alt="_images/time-series-and-dummy.png" src="_images/time-series-and-dummy.png" style="width: 800px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 10 </span><span class="caption-text">Illustration of how a dummy variable can code the on-off pattern of the stimulus presentation..</span><a class="headerlink" href="#timeseries-dummy-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>In terms of the GLM, adding this form of dummy variable is straightforward, as shown on the right. The design matrix contains a columns of 1’s for the intercept and then our dummy variable coding which elements of the timeseries in Y were measured during rest and which elements were measured during tapping. In terms of interpreting the parameters, we know that a dummy variable will give us a mean difference between the category coded with a 1 and the category coded with a 0. In this instance, it will tell us the average difference in signal between the rest and tapping conditions. Our image of the estimate of <span class="math notranslate nohighlight">\(\beta_{1}\)</span> will therefore show us where in the brain the largest signal change occurred between rest and tapping. The value of <span class="math notranslate nohighlight">\(\beta_{0}\)</span> will therefore be the average signal during the rest condition, forming our baseline. The average signal value during the tapping condition is therefore given by <span class="math notranslate nohighlight">\(\beta_{0} + \beta_{1}\)</span>, as illustrated below.</p>
+<p>In terms of the GLM, the design matrix for this form of model would contains a columns of 1’s for the intercept and then the dummy variable coding which elements of the time series were measured during rest and which elements were measured during tapping. For instance, if the subject repeated the 5 seconds of tapping twice and we used TR = 1, the model would have the form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix}
+y_{1}  \\
+y_{2}  \\
+y_{3}  \\
+y_{4}  \\
+y_{5}  \\
+y_{6}  \\
+y_{7}  \\
+y_{8}  \\
+y_{9}  \\
+y_{10} \\
+y_{11} \\
+y_{12} \\
+y_{13} \\
+y_{14} \\
+y_{15} \\
+y_{16} \\
+y_{17} \\
+y_{18} \\
+y_{19} \\
+y_{20}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 &amp; 0 \\
+1 &amp; 0 \\
+1 &amp; 0 \\
+1 &amp; 0 \\
+1 &amp; 0 \\
+1 &amp; 1 \\
+1 &amp; 1 \\
+1 &amp; 1 \\
+1 &amp; 1 \\
+1 &amp; 1 \\
+1 &amp; 0 \\
+1 &amp; 0 \\
+1 &amp; 0 \\
+1 &amp; 0 \\
+1 &amp; 0 \\
+1 &amp; 1 \\
+1 &amp; 1 \\
+1 &amp; 1 \\
+1 &amp; 1 \\
+1 &amp; 1
+\end{bmatrix}
+\begin{bmatrix}
+\beta_{0} \\
+\beta_{1}
+\end{bmatrix}
++
+\begin{bmatrix}
+\epsilon_{1}  \\
+\epsilon_{2}  \\
+\epsilon_{3}  \\
+\epsilon_{4}  \\
+\epsilon_{5}  \\
+\epsilon_{6}  \\
+\epsilon_{7}  \\
+\epsilon_{8}  \\
+\epsilon_{9}  \\
+\epsilon_{10} \\
+\epsilon_{11} \\
+\epsilon_{12} \\
+\epsilon_{13} \\
+\epsilon_{14} \\
+\epsilon_{15} \\
+\epsilon_{16} \\
+\epsilon_{17} \\
+\epsilon_{18} \\
+\epsilon_{19} \\
+\epsilon_{20}
+\end{bmatrix}
+\end{split}\]</div>
+<p>In terms of interpreting the parameters, we know that a dummy variable will produce a parameter estimate that can be interpreted as the <em>mean difference</em> between the categories. When applied to fMRI data, the parameter estimate will tell us the average difference in the BOLD signal between the rest condition and the tapping conditions. The image of estimates for <span class="math notranslate nohighlight">\(\beta_{1}\)</span> will therefore indicate where in the brain the largest signal change occurred between rest and tapping. The value of <span class="math notranslate nohighlight">\(\beta_{0}\)</span> will therefore be the average signal during the rest condition. The average value of the BOLD signal during the tapping condition is therefore given by <span class="math notranslate nohighlight">\(\beta_{0} + \beta_{1}\)</span>, as illustrated in <a class="reference internal" href="#dummy-interp-fig"><span class="std std-numref">Fig. 11</span></a>.</p>
+<figure class="align-default" id="dummy-interp-fig">
+<a class="reference internal image-reference" href="_images/dummy-interp.png"><img alt="_images/dummy-interp.png" src="_images/dummy-interp.png" style="width: 550px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Illustration of interpreting the parameter values from a dummy variable model.</span><a class="headerlink" href="#dummy-interp-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 <section id="visualising-the-design-matrix">
 <h2>Visualising the Design Matrix<a class="headerlink" href="#visualising-the-design-matrix" title="Permalink to this heading">#</a></h2>
 <p>As already indicated, the design matrix is a very important part of the GLM. No only is it the only element of the GLM equation that is constant across voxels, but it also encodes our predictions about what we expect to see in regions of the brain that are responding to our experimental conditions. Knowing the structure of the design matrix is therefore essential to be able to interpret the parameter estimates. Because of this, SPM take the unique step of drawing the design matrix for us as a summary of our model. When we come to specifying the GLM using SPM, we will be presented with the design matrix drawn as a greyscale image, as illustrated below. Here, solid blocks of colour represent dummy variables whereas those columns with a gradient represent continuous variables.</p>
+<figure class="align-default" id="x-example-fig">
+<a class="reference internal image-reference" href="_images/X-example.jpg"><img alt="_images/X-example.jpg" src="_images/X-example.jpg" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Example of the design matrix visualisation produced by SPM.</span><a class="headerlink" href="#x-example-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <p>We can see the same effect by using the <code class="docutils literal notranslate"><span class="pre">imagesc</span></code> function in MATLAB with the design matrix from the previous example</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -439,7 +530,16 @@ The mass-univariate framework</p>
 <h2>Time Series and Regression Perspectives<a class="headerlink" href="#time-series-and-regression-perspectives" title="Permalink to this heading">#</a></h2>
 <p>Compared to when we were applying the GLM to non-imaging data, one of the additional complications of timeseries data is that it has a natural order based on when each data point was collected. What this means is that there are actually two complimentary perspectives we can use to view the data and the model. This can be helpful because both perspectives are correct, but you may find one more intuitive than the other.</p>
 <p>In the time series perspective, we view the data in its natural ordering. So when plotted, we have time on the x-axis and intensity on the y-axis. From this perspective, we can see gross changes in the shape of the signal over time. We can also superimpose our model prediction to see where the predicted signal change corresponds to a change in the raw data. This perspective is shown in the left column of the figure below for a timeseries with a strong signal change (top) and a weak signal change (bottom).</p>
-<p>In the regression perspective, we view the data like a typical multiple regression problem. So when plotted, we have our predictor variable on the x-axis and intensity on the y-axis. For a dummy predictor variable, this means our x-axis will correspond to values of 1 and 0, depending on whether the data were gathered during one experimental condition or the other. From this perspective, superimposing the model prediction means drawing the regression line between the two clusters of data. This perspective is shown in the right column of the figure below.</p>
+<p>In the regression perspective, we view the data like a typical multiple regression problem. So when plotted, we have our predictor variable on the x-axis and intensity on the y-axis. For a dummy predictor variable, this means our x-axis will correspond to values of 1 and 0, depending on whether the data were gathered during one experimental condition or the other. From this perspective, superimposing the model prediction means drawing the regression line between the two clusters of data. This perspective is shown in the right column of <a class="reference internal" href="#ts-reg-fig"><span class="std std-numref">Fig. 13</span></a>.</p>
+<figure class="align-default" id="ts-reg-fig">
+<a class="reference internal image-reference" href="_images/ts-reg-persp.png"><img alt="_images/ts-reg-persp.png" src="_images/ts-reg-persp.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Example of both the time series perspective (<em>left</em>) and regression perspective (<em>right</em>) on the model fit from the GLM. This is shown for both a voxel with a strong signal change (<em>top</em>) and a voxel with a weak signal change (<em>bottom</em>).</span><a class="headerlink" href="#ts-reg-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="inference">
+<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -506,9 +606,11 @@ The mass-univariate framework</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mass-univariate-framework">The Mass-univariate Framework</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-predictors-for-the-time-series">Creating Predictors for the Time Series</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-design-matrix">Visualising the Design Matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-and-regression-perspectives">Time Series and Regression Perspectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
 </ul>
   </nav></div>
 
