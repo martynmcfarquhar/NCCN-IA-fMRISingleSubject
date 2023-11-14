@@ -371,6 +371,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-the-outcome-vector">Specifying the Outcome Vector</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-design-matrix">Building the Design Matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation">Parameter Estimation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-parameters">Interpreting the Parameters</a></li>
@@ -389,9 +390,10 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="the-glm-a-worked-example">
 <h1>The GLM: A Worked Example<a class="headerlink" href="#the-glm-a-worked-example" title="Permalink to this heading">#</a></h1>
+<p>In the previous section, we discussed a lot of detail around the theory of the GLM. However, this was all somewhat abstract, with only minimal examples of applications. As such, in this section, we will try to make this framework more concrete by analysing a simple, non-imaging dataset.</p>
 <section id="dataset">
 <h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading">#</a></h2>
-<p>To see how we use the GLM, we will work through a simple non-imaging example before turning to applying the GLM to fMRI data in the next section. In this example we’re again looking at the miles per gallon (MPG) of a selection of cars. To keep this example contained, we have limited our sample to only 6 cars. The data set is shown below</p>
+<p>For this example, we are looking at the miles per gallon (MPG) of a selection of cars. The question of interest is simply to understand how <em>horsepower</em>, <em>weight</em> and <em>transmission type</em> are associated with the fuel efficiency of a car. To keep this example contained, we have limited our sample to only 6 cars. The data set is shown below</p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>MPG</p></th>
@@ -433,7 +435,10 @@ document.write(`
 </tr>
 </tbody>
 </table>
-<p>In this example, <code class="docutils literal notranslate"><span class="pre">MPG</span></code> is the outcome variable and so forms the vector <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span></p>
+</section>
+<section id="specifying-the-outcome-vector">
+<h2>Specifying the Outcome Vector<a class="headerlink" href="#specifying-the-outcome-vector" title="Permalink to this heading">#</a></h2>
+<p>For this example, <code class="docutils literal notranslate"><span class="pre">MPG</span></code> is the outcome variable and so forms the vector <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">21.0</span><span class="w"> </span><span class="mf">21.0</span><span class="w"> </span><span class="mf">22.8</span><span class="w"> </span><span class="mf">21.4</span><span class="w"> </span><span class="mf">18.7</span><span class="w"> </span><span class="mf">18.1</span><span class="p">]</span><span class="o">&#39;</span>
@@ -453,7 +458,7 @@ document.write(`
 </section>
 <section id="building-the-design-matrix">
 <h2>Building the Design Matrix<a class="headerlink" href="#building-the-design-matrix" title="Permalink to this heading">#</a></h2>
-<p>In terms of our design matrix we need a column of 1s for the constant, followed by <code class="docutils literal notranslate"><span class="pre">horsepower</span></code>, <code class="docutils literal notranslate"><span class="pre">weight</span></code> and then a dummy variable for <code class="docutils literal notranslate"><span class="pre">transmission</span></code>.</p>
+<p>In terms of the design matrix, we need a column of 1s for the constant, followed by <code class="docutils literal notranslate"><span class="pre">horsepower</span></code>, <code class="docutils literal notranslate"><span class="pre">weight</span></code> and then a dummy variable for <code class="docutils literal notranslate"><span class="pre">transmission</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">1</span><span class="p">;</span><span class="w">     </span><span class="k">...</span>
@@ -528,7 +533,7 @@ document.write(`
    -1.7150
 </pre></body></html></div></div>
 </div>
-<p>These are the most likely values for the parameters in the population, based on the current data. Once we have the parameter estimates we can calculate the predicted values of <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span>, denoted <span class="math notranslate nohighlight">\(\hat{\mathbf{Y}}\)</span></p>
+<p>These are therefore the values that make the current data most probable. Once we have the parameter estimates we can calculate the predicted values of <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span>, denoted <span class="math notranslate nohighlight">\(\hat{\mathbf{Y}}\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Yhat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">X</span><span class="o">*</span><span class="nb">beta</span>
@@ -787,24 +792,6 @@ Root Mean Squared Error: 1.26
 R-squared: 0.797,  Adjusted R-Squared: 0.493
 F-statistic vs. constant model: 2.62, p-value = 0.288</pre></body></html></div></div>
 </div>
-<p>We can use the returned <code class="docutils literal notranslate"><span class="pre">Model</span></code> object to create <em>added variable</em> plots to visualise the edges of the regression plane, defined by the parameter estimates.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">tiledlayout</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-<span class="nb">nexttile</span><span class="p">;</span>
-<span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
-<span class="nb">nexttile</span><span class="p">;</span>
-<span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
-<span class="nb">nexttile</span><span class="p">;</span>
-<span class="n">plotAdded</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/a04f522a1c38fc1e354a929fc9a718bb667fce4876e6a8895498db03f875d16d.png" src="_images/a04f522a1c38fc1e354a929fc9a718bb667fce4876e6a8895498db03f875d16d.png" />
-</div>
-</div>
-<p>Noting that <code class="docutils literal notranslate"><span class="pre">transmission</span></code> no longer appears as a dummy variable because it has been <em>adjusted</em> for the presence of the other variables in the model. In all cases, the very wide confidence bands are a result of large uncertainty in the parameter estimates, due to the small sample size.</p>
 </section>
 </section>
 
@@ -872,6 +859,7 @@ F-statistic vs. constant model: 2.62, p-value = 0.288</pre></body></html></div><
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-the-outcome-vector">Specifying the Outcome Vector</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-design-matrix">Building the Design Matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation">Parameter Estimation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-parameters">Interpreting the Parameters</a></li>
