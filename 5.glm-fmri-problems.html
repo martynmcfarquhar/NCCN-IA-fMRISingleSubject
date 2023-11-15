@@ -485,13 +485,31 @@ document.write(`
 </section>
 <section id="issue-4-image-scaling">
 <h2>Issue 4: Image Scaling<a class="headerlink" href="#issue-4-image-scaling" title="Permalink to this heading">#</a></h2>
-<p>The final issue that we have not considered is that the BOLD signal itself is measured on an arbitrary scale that can differ from subject-to-subject or scanner-to-scanner. The problem is that the GLM parameters are on the same scale as the data. For instance, β1 gives the change in signal for a unit change in our first predictor variable. Unfortunately, this means we cannot meaningfully compare the magnitude of these parameters between subjects, because their value depends upon the arbitrary scale of the signal. To get around this, SPM will scale the data such that the mean of the data over all voxels and all volumes is equal to 100. This is known as grand mean scaling and will effectively put all our subjects on the same scale. This is done completely automatically in the background for you, so why do we care? Well you have to be slightly careful about interpretation here because the temptation might be to think that this scaling renders the parameters on some sort of standardised and interpretable scale, such as percentage signal change. However, this is not correct and the actual procedure to convert the parameters to percentage signal change is much more involved (as explained by Pernet (2014)). So note that SPM automatically scales the data, but remember this does not result in some standardised and easy to interpret metric for our effects.</p>
+<p>The final problem with the approach described in the previous section is that the BOLD signal is measured on an arbitrary scale that can differ from subject-to-subject and scanner-to-scanner. The reason this is an issue is because the GLM parameters are on the same scale as the data. As we know from the previous example, the estimate of <span class="math notranslate nohighlight">\(\beta_{1}\)</span> will indicate the change in BOLD signal for a unit change in the first predictor variable. Unfortunately, the magnitude of this effect cannot be meaningfully compared with that of another subjects, because the depends upon how the signal is scaled. To get around this, SPM will rescale the data such that the mean over all voxels and all volumes is equal to 100. This is known as <em>grand mean scaling</em> and is performed automatically in the background. The reason why we should be aware of this step is because we need to be careful about <em>interpretation</em>. The temptation might be to think that this scaling renders the parameters on some sort of standardised and interpretable scale, such as <em>percentage signal change</em>. However, this is not correct as the procedure to convert the parameters to percentage signal change is much more involved (see <a class="reference external" href="https://www.frontiersin.org/articles/10.3389/fnins.2014.00001/full">Pernet (2014)</a>). So note that SPM automatically scales the data, but remember this does not result in easy to interpret units for the effects.</p>
 </section>
 <section id="the-adapted-glm">
 <h2>The Adapted GLM<a class="headerlink" href="#the-adapted-glm" title="Permalink to this heading">#</a></h2>
-<p>So we have now seen that in order to make the GLM work with fMRI data we have to convolve our dummy variables with the HRF, estimate and remove the autocorrelation in the data, filter the data to remove low-frequency noise and scale the data to put it on a common scale across all subjects. All these steps form an adapted version of the GLM, as illustrated below</p>
-<p>where the “star” symbol indicates the whitened and filtered versions of the data, design matrix and errors. Once the parameters have been estimated, they can be used to multiply each column to scale the prediction to best match the data, as shown below. Notice how the constant takes on the baseline level of signal (400 in this example) and that the conditions are simply changes relative to this baseline.</p>
-<p>Adding all the scaled columns together provides our final model prediction, giving us a clear perspective on what the GLM is doing to try and separate the true signal from noise.</p>
+<p>We have now seen that, in order to make the GLM suitable with fMRI data, it is necessary to convolve dummy variables with a HRF, estimate and remove the autocorrelation in the time series, filter the data to remove low-frequency noise and rescale the data to common units across subjects. All these steps form an <em>adapted</em> version of the GLM, as illustrated in <a class="reference internal" href="#adapt-glm1-fig"><span class="std std-numref">Fig. 20</span></a></p>
+<figure class="align-default" id="adapt-glm1-fig">
+<a class="reference internal image-reference" href="_images/adapted-glm-1.png"><img alt="_images/adapted-glm-1.png" src="_images/adapted-glm-1.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">The adapted fMRI GLM before parameter estimation.</span><a class="headerlink" href="#adapt-glm1-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>where the <span class="math notranslate nohighlight">\(\star\)</span> symbol indicates the <em>scaled</em>, <em>whitened</em> and <em>filtered</em> versions of the data, design matrix and errors. Once the parameters have been estimated, they can be used to multiply each column to scale the prediction, as shown in <a class="reference internal" href="#adapt-glm2-fig"><span class="std std-numref">Fig. 21</span></a>. Notice how the constant takes on the baseline level of signal (400 in this example) and that the conditions are simply changes relative to this baseline.</p>
+<figure class="align-default" id="adapt-glm2-fig">
+<a class="reference internal image-reference" href="_images/adapted-glm-2.png"><img alt="_images/adapted-glm-2.png" src="_images/adapted-glm-2.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">The adapted fMRI GLM after the parameter estimates are used to scale the design matrix columns.</span><a class="headerlink" href="#adapt-glm2-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Adding all the scaled columns together provides the final model prediction, as shown in <a class="reference internal" href="#adapt-glm3-fig"><span class="std std-numref">Fig. 22</span></a>.</p>
+<figure class="align-default" id="adapt-glm3-fig">
+<a class="reference internal image-reference" href="_images/adapted-glm-3.png"><img alt="_images/adapted-glm-3.png" src="_images/adapted-glm-3.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 22 </span><span class="caption-text">The adapted fMRI GLM after the scaled design matrix columns are summed, producing the final prediction of the BOLD signal.</span><a class="headerlink" href="#adapt-glm3-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 </section>
 
