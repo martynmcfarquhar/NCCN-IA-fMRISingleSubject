@@ -372,7 +372,6 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-experiment">Example Experiment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling-approach">Modelling Approach</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-a-single-subject-model-in-spm">Specifying a Single-subject Model in SPM</a></li>
 </ul>
             </nav>
@@ -387,27 +386,53 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="single-subject-modelling-in-spm">
 <h1>Single-subject Modelling in SPM<a class="headerlink" href="#single-subject-modelling-in-spm" title="Permalink to this heading">#</a></h1>
-<p>In the final section of this lesson, we will see how to specify a single-subject GLM using SPM12. These models are also known as <em>1st-level</em> models, for reasons we will cover later in the course. The example data for this section consists of a fully pre-processed <a class="reference external" href="https://livemanchesterac.sharepoint.com/:u:/r/sites/UOM-FBMH-MSc-NCCN/Shared%20Documents/PCHN62121%20Image%20Analysis/Learning%20Materials/Asynchronous/Week%2008/2.%20Single-subject%20Models/Data/swRD018_PP012_Encoding.nii?csf=1&amp;web=0&amp;e=Xa6YSE&amp;download=1">functional scan</a> with associated <a class="reference external" href="https://livemanchesterac.sharepoint.com/:x:/r/sites/UOM-FBMH-MSc-NCCN/Shared%20Documents/PCHN62121%20Image%20Analysis/Learning%20Materials/Asynchronous/Week%2008/2.%20Single-subject%20Models/Data/Timings.xlsx?d=w643a1e9e9efc44768b132bed48c4b00d&amp;csf=1&amp;web=0&amp;e=tFu9G8&amp;download=1">timing information</a>.</p>
+<p>In the final section of this lesson, we will see how to specify a single-subject GLM using SPM12. These models are also known as <em>1st-level</em> models, for reasons we will cover later in the module. The example data for this section consists of a fully pre-processed <a class="reference external" href="https://livemanchesterac.sharepoint.com/:u:/r/sites/UOM-FBMH-MSc-NCCN/Shared%20Documents/PCHN62121%20Image%20Analysis/Learning%20Materials/Asynchronous/Week%2008/2.%20Single-subject%20Models/Data/swRD018_PP012_Encoding.nii?csf=1&amp;web=0&amp;e=Xa6YSE&amp;download=1">functional scan</a> with associated <a class="reference external" href="https://livemanchesterac.sharepoint.com/:x:/r/sites/UOM-FBMH-MSc-NCCN/Shared%20Documents/PCHN62121%20Image%20Analysis/Learning%20Materials/Asynchronous/Week%2008/2.%20Single-subject%20Models/Data/Timings.xlsx?d=w643a1e9e9efc44768b132bed48c4b00d&amp;csf=1&amp;web=0&amp;e=tFu9G8&amp;download=1">timing information</a>.</p>
 <section id="example-experiment">
 <h2>Example Experiment<a class="headerlink" href="#example-experiment" title="Permalink to this heading">#</a></h2>
-<p>The example experiment is a simple block design that involved viewing pictures of different valences. Each block consisted of 6 pictures from the same valence category and the blocks were arranged as illustrated in {numref}</p>
-<p>Examples of images shown during the positive block are given below</p>
-<p>Examples of images shown during the negative block are given below</p>
-<p>Examples of images shown during the neutral block are given below</p>
-<p>Between each repetition of positive, negative and neutral blocks, the subjects were asked to rest for 15 seconds. During this time they saw a fixation cross on the screen which turned into a double-cross 5 seconds before the end of rest. This is illustrated below.</p>
-<p>In terms of the scanning details, the TR was 2s, the TE was 30ms and the voxel size was 3mm isotropic. 145 volumes were collected of dimensions 53 <span class="math notranslate nohighlight">\(\times\)</span> 63 <span class="math notranslate nohighlight">\(\times\)</span> 52 voxels. The data has already been pre-processed by realignment to the first volume, normalisation to MNI space and Gaussian smoothing using a kernel of 8mm FWHM.</p>
+<p>The example experiment is a simple block design that involved viewing pictures of different valences. Each block consisted of 6 pictures from the same valence category and the blocks were arranged as illustrated in <a class="reference internal" href="#ex-design-fig"><span class="std std-numref">Fig. 23</span></a>.</p>
+<figure class="align-default" id="ex-design-fig">
+<a class="reference internal image-reference" href="_images/example-design.png"><img alt="_images/example-design.png" src="_images/example-design.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 23 </span><span class="caption-text">Schematic of the example experimental design.</span><a class="headerlink" href="#ex-design-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Examples of images shown during the <em>positive</em> block are given in <a class="reference internal" href="#pos-ex-fig"><span class="std std-numref">Fig. 24</span></a></p>
+<figure class="align-default" id="pos-ex-fig">
+<a class="reference internal image-reference" href="_images/pos-block-example.png"><img alt="_images/pos-block-example.png" src="_images/pos-block-example.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 24 </span><span class="caption-text">Example images from the <em>positive</em> valence block.</span><a class="headerlink" href="#pos-ex-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Examples of images shown during the <em>negative</em> block are given in <a class="reference internal" href="#neg-ex-fig"><span class="std std-numref">Fig. 25</span></a></p>
+<figure class="align-default" id="neg-ex-fig">
+<a class="reference internal image-reference" href="_images/neg-block-example.png"><img alt="_images/neg-block-example.png" src="_images/neg-block-example.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 25 </span><span class="caption-text">Example images from the <em>negative</em> valence block.</span><a class="headerlink" href="#neg-ex-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Examples of images shown during the <em>neutral</em> block are given in <a class="reference internal" href="#neu-ex-fig"><span class="std std-numref">Fig. 26</span></a></p>
+<figure class="align-default" id="neu-ex-fig">
+<a class="reference internal image-reference" href="_images/neu-block-example.png"><img alt="_images/neu-block-example.png" src="_images/neu-block-example.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 26 </span><span class="caption-text">Example images from the <em>neutral</em> valence block.</span><a class="headerlink" href="#neu-ex-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Between each repetition of <em>positive</em>, <em>negative</em> and <em>neutral</em> blocks, the subjects were asked to rest for 15 seconds. During this time, they saw a fixation cross on the screen. This turned into a double-cross 5 seconds before the end of the rest period, as illustrated in <a class="reference internal" href="#fix-ex-fig"><span class="std std-numref">Fig. 27</span></a>.</p>
+<figure class="align-default" id="fix-ex-fig">
+<a class="reference internal image-reference" href="_images/fix-block-example.png"><img alt="_images/fix-block-example.png" src="_images/fix-block-example.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 27 </span><span class="caption-text">Example of the fixation cross and double-cross displayed during the rest periods..</span><a class="headerlink" href="#fix-ex-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In terms of the scanning details, the TR was 2s, the TE was 30ms and the voxel size was 3mm isotropic. 145 volumes were collected of dimensions 53 <span class="math notranslate nohighlight">\(\times\)</span> 63 <span class="math notranslate nohighlight">\(\times\)</span> 52. The data has already been preprocessed by realignment to the first volume, normalisation to MNI space and Gaussian smoothing using a kernel of 8mm FWHM.</p>
 </section>
 <section id="modelling-approach">
 <h2>Modelling Approach<a class="headerlink" href="#modelling-approach" title="Permalink to this heading">#</a></h2>
-<p>In terms of the modelling approach, the video will show you how to specify a simple on-off dummy variable for each condition that will then be convolved with the canonical HRF. Importantly, the approach taken in the video is to use the rest condition as an implicit baseline. This means we do not model rest explicitly as a dummy variable, but instead leave it to form our constant or baseline condition. As explained earlier, this means our parameter estimates can be interpreted as mean differences representing the average signal change from rest for each experimental condition.</p>
-</section>
-<section id="inference">
-<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h2>
-<p>Of note is that the video stops short of calculating <em>t</em>-statistics and <em>p</em>-values for the purpose of inference. Although seemingly a simple step in the examples shown in the lesson, inference using images is a much more complex affair. As such, we will leave this element of the analysis until next week.</p>
+<p>In terms of the modelling approach, a simple on-off dummy variable can be specified for each valence condition. These variables can then be convolved with the canonical HRF. Importantly, we will choose to include the rest periods as an <em>implicit baseline</em>. This means we will not model rest explicitly as a dummy variable. Instead, rest will form the <em>constant</em> or <em>baseline</em> condition. As explained earlier, this means the parameter estimates will be interpreted as <em>mean differences</em>, representing the average signal change from rest for each experimental condition.</p>
 </section>
 <section id="specifying-a-single-subject-model-in-spm">
 <h2>Specifying a Single-subject Model in SPM<a class="headerlink" href="#specifying-a-single-subject-model-in-spm" title="Permalink to this heading">#</a></h2>
-<p>The video below will… Of note is that there is no accompanying MATLAB code for this section, as building the design matrix and specifying the data information must be performed through the SPM graphical interface. Estimation is then performed using the <code class="docutils literal notranslate"><span class="pre">spm_spm</span></code> function, but there is little need to see this in action. We will cover how these models can be automated using code generated from the batch system later on the course.</p>
+<p>The video below will guide you through the process of specifiying a single-subject GLM using SPM. Of note is that there is no accompanying MATLAB code for this section, as building the design matrix and specifying the data information must be performed through the graphical interface. Estimation could then be performed using the <code class="docutils literal notranslate"><span class="pre">spm_spm</span></code> function, but there is little need to see this in action. We will cover how these models can be automated using code generated from the batch system later on the course.</p>
 <div style="max-width: 1280px"><div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"><iframe src="https://livemanchesterac.sharepoint.com/sites/UOM-FBMH-MSc-NCCN/_layouts/15/embed.aspx?UniqueId=1852fc3c-b43d-4e07-b9bf-7a231b65d879&embed=%7B%22hvm%22%3Atrue%2C%22ust%22%3Atrue%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="1280" height="720" frameborder="0" scrolling="no" allowfullscreen title="SingleSubjectSPM.mov" style="border:none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; height: 100%; max-width: 100%;"></iframe></div></div></section>
 </section>
 
@@ -476,7 +501,6 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-experiment">Example Experiment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling-approach">Modelling Approach</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-a-single-subject-model-in-spm">Specifying a Single-subject Model in SPM</a></li>
 </ul>
   </nav></div>
