@@ -446,15 +446,7 @@ y_{i} \sim \mathcal{N}(\beta_{0} + \beta_{1}x_{i}, \sigma)
 <p><span class="caption-number">Fig. 5 </span><span class="caption-text">Illustration of the simple regression normal probability model. The operator <span class="math notranslate nohighlight">\(E(Y)\)</span> indicates the <em>expected</em> value of the outcome variable which, for a normal distribution, is equivalent to the mean.</span><a class="headerlink" href="#simple-prob-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>The standard deviation of these normal distributions is given by <span class="math notranslate nohighlight">\(\sigma\)</span> and reflects how widely spread the data are around the regression line. There is therefore a direct connection between the width of the assumed probability distributions and the model errors. As such, for each value of <code class="docutils literal notranslate"><span class="pre">Lot</span> <span class="pre">Size</span></code>, we expect there to be a normal distribution of errors, spread equally above and below the line, with most errors close to the line and fewer further away. As such, the simple regression model can also be expressed as</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align}
-y_{i} &amp;= \beta_{0} + \beta_{1}x_{i} + \epsilon_{i} \\
-\epsilon_{i} &amp;\sim \mathcal{N}(0,\sigma)
-\end{align}
-\end{split}\]</div>
-<p>Remembering that this probability model represents the <em>population</em>, the aim of a simple regression analysis is to use a <em>sample</em> to estimate both the <em>mean</em> and <em>variance</em> of the population distribution. As the mean depends upon the parameters <span class="math notranslate nohighlight">\(\beta_{0}\)</span> and <span class="math notranslate nohighlight">\(\beta_{1}\)</span>, these must also be estimated from the sample. Finding the line that best fits the data will result in estimates for <span class="math notranslate nohighlight">\(\beta_{0}\)</span> and <span class="math notranslate nohighlight">\(\beta_{1}\)</span>. The errors resulting from this fit can then be used to estimate <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<p>The standard deviation of these normal distributions is given by <span class="math notranslate nohighlight">\(\sigma\)</span> and reflects how widely spread the data are around the regression line. There is therefore a direct connection between the width of the assumed probability distributions and the model errors. Remembering that this probability model represents the <em>population</em>, the aim of a simple regression analysis is to use a <em>sample</em> to estimate both the <em>mean</em> and <em>variance</em> of the population distribution. As the mean depends upon the parameters <span class="math notranslate nohighlight">\(\beta_{0}\)</span> and <span class="math notranslate nohighlight">\(\beta_{1}\)</span>, these must also be estimated from the sample. Finding the line that best fits the data will result in estimates for <span class="math notranslate nohighlight">\(\beta_{0}\)</span> and <span class="math notranslate nohighlight">\(\beta_{1}\)</span>. The errors resulting from this fit can then be used to estimate <span class="math notranslate nohighlight">\(\sigma\)</span> and the probability model is complete.</p>
 <p>Once the parameters are estimated, hypothesis testing can be used to determine whether the null hypotheses</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -464,23 +456,6 @@ y_{i} &amp;= \beta_{0} + \beta_{1}x_{i} + \epsilon_{i} \\
 \end{align}
 \end{split}\]</div>
 <p>can be rejected. Usually, the test on <span class="math notranslate nohighlight">\(\beta_{1}\)</span> is of most interest because a slope of 0 is indicative of <em>no</em> relationship between the outcome and predictor variables. If significant, we would assume some non-zero relationship is present in the population and can interpret what the magnitude of <span class="math notranslate nohighlight">\(\hat{\beta}_{1}\)</span> tells us about the relationship under study. This is often in the context of using the simple regression model to <em>predict</em> the outcome using the values of the predictor. For the example above, this would result in being able to predict <code class="docutils literal notranslate"><span class="pre">Hours</span></code> by only knowing the value of <code class="docutils literal notranslate"><span class="pre">Lot</span> <span class="pre">Size</span></code>, allowing the manager to determine if more or fewer workers need to be hired as production demands are scaled up or down.</p>
-<div class="tip admonition">
-<p class="admonition-title">Randomness of the errors</p>
-<p>One of the more confusing aspects of statistical models is that they can be written in mutliple equivalent ways. For instance, for simple regression, the probability model can be written as either</p>
-<div class="math notranslate nohighlight">
-\[
-y_{i} \sim \mathcal{N}\left(\beta_{0} + \beta_{1}x_{i},\sigma\right)
-\]</div>
-<p>or</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align}
-y_{i} &amp;= \beta_{0} + \beta_{1}x_{i} + \epsilon_{i} \\
-\epsilon_{i} &amp;\sim \mathcal{N}(0,\sigma)
-\end{align}
-\end{split}\]</div>
-<p>Although the first form may be more intuitive, the second form is insightful in terms of the principles of these models. Recall that we are assuming that there is some <em>constant</em> effect that runs through all our observations of a particular phenomena. Also recall that we assume that the reason we do not observe the same value every time is because we are measuring a <em>random process</em> that is subject to measurement error. As such, each measurement we take is the sum of our constant effect of interest and random perturbations. This structure is then reflected in the statistical model, as the mean of the assumed distribution is considered the <em>constant</em> effect and the errors are considered the <em>random</em> deflections. As such, the <em>errors</em> are the element that creates randomness and thus are the <em>random variable</em> component of our measurements. In statistical parlance, this is the distinction between <em>fixed-effects</em> and <em>random-effects</em>. Fixed-effects are associated with the mean of the assumed probability distribution, whereas random-effects are associated with random perturbations and thus the <em>variance</em> of the measurements.</p>
-</div>
 </section>
 <section id="multiple-regression">
 <h3>Multiple Regression<a class="headerlink" href="#multiple-regression" title="Permalink to this heading">#</a></h3>
