@@ -415,7 +415,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="the-general-linear-model">
 <h1>The General Linear Model<a class="headerlink" href="#the-general-linear-model" title="Permalink to this heading">#</a></h1>
-<p>To begin with, we will take a high-level perspective on the GLM as a <em>framework</em> that can be applied to any dataset. This may appear somewhat abstract on a first read, however, we will see how this is applied to a real dataset in the next section. Remember that at this point we are not talking about fMRI data specifically. Given that this is a specialised application of the GLM, we first need to discuss the general theory before seeing how this traditional approach needs to be adjusted to suit modelling an fMRI time series.</p>
+<p>To begin with, we will take a high-level perspective on the GLM as a <em>framework</em> that can be applied to any dataset. This may appear somewhat abstract on a first read, however, we will see how this is applied to a real dataset in the next section. At this point, we are not talking about fMRI data specifically. Given that this is a specialised application of the GLM, we first need to discuss the general theory before seeing how it can be applied to neuroimaging data.</p>
 <section id="the-general-linear-model-framework">
 <h2>The General Linear Model Framework<a class="headerlink" href="#the-general-linear-model-framework" title="Permalink to this heading">#</a></h2>
 <p>To begin with, we will discuss the mathematical framework behind the GLM. In order to understand the GLM, we need to understand <em>multiple regression</em> which, in its most basic form, is know as <em>simple</em> regression.</p>
@@ -426,7 +426,7 @@ document.write(`
 \[
 y_{i} = \beta_{0} + \beta_{1}x_{i} + \epsilon_{i}
 \]</div>
-<p>which defines a straight-line fit to the data, with <span class="math notranslate nohighlight">\(\beta_{0}\)</span> representing the <em>intercept</em> and <span class="math notranslate nohighlight">\(\beta_{1}\)</span> representing the <em>slope</em>. The term <span class="math notranslate nohighlight">\(\epsilon\)</span> quantifies the amount of <em>error</em> in the model, allowing for the fact that a perfect fit between the two variables is rarely possible. This model is illustrated in <a class="reference internal" href="#simple-fig"><span class="std std-numref">Fig. 4</span></a>. In this example, the manager of a production line wants a good estimate of the required number of worker hours given the number of units that must be produced (the <em>lot size</em>).</p>
+<p>which defines a straight-line fit to the data, where <span class="math notranslate nohighlight">\(\beta_{0}\)</span> representing the <em>intercept</em> and <span class="math notranslate nohighlight">\(\beta_{1}\)</span> representing the <em>slope</em>. The term <span class="math notranslate nohighlight">\(\epsilon\)</span> quantifies the amount of <em>error</em> in the model, allowing for the fact that a perfect fit between the two variables is rarely possible. This model is illustrated in <a class="reference internal" href="#simple-fig"><span class="std std-numref">Fig. 4</span></a>. In this example, the manager of a building company wants a good estimate of the required number of hours to build given the size of the lot.</p>
 <figure class="align-default" id="simple-fig">
 <a class="reference internal image-reference" href="_images/simple-reg.png"><img alt="_images/simple-reg.png" src="_images/simple-reg.png" style="width: 700px;" /></a>
 <figcaption>
