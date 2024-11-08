@@ -464,22 +464,14 @@ y_{i} \sim \mathcal{N}(\beta_{0} + \beta_{1}x_{i}, \sigma)
 \[\begin{split}
 \begin{align}
 y_{i} &amp;= \beta_{0} + \beta_{1}x_{i1} + \beta_{2}x_{i2} + \dots + \beta_{k}x_{ik} + \epsilon_{i} \\
-&amp;= \beta_{0} + \sum_{j=1}^{k} \beta_{j}x_{ij} + \epsilon_{i}
+&amp;= \beta_{0} + \sum_{j=1}^{k} \beta_{j}x_{ij} + \epsilon_{i},
 \end{align}
 \end{split}\]</div>
 <p>where we usually assume a normal probability model of the form</p>
 <div class="math notranslate nohighlight">
 \[
-y_{i} \sim \mathcal{N}\left(\beta_{0} + \sum_{j=1}^{k} \beta_{j}x_{ij},\sigma\right)
+y_{i} \sim \mathcal{N}\left(\beta_{0} + \sum_{j=1}^{k} \beta_{j}x_{ij},\sigma\right).
 \]</div>
-<p>which can also be expressed as</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align}
-y_{i} &amp;= \beta_{0} + \sum_{j=1}^{k} \beta_{j}x_{ij} + \epsilon_{i} \\
-\epsilon_{i} &amp;\sim \mathcal{N}\left(0,\sigma\right)
-\end{align}
-\end{split}\]</div>
 <p>Conceptually, much of multiple regression is the same as simple regression, except for a few details. Firstly, rather than a regression line this model estimates a regression <em>plane</em> in <span class="math notranslate nohighlight">\(k\)</span>-dimensional space. For instance, if <span class="math notranslate nohighlight">\(k=2\)</span> then the model can be visualised as shown in <a class="reference internal" href="#plane-fig"><span class="std std-numref">Fig. 6</span></a></p>
 <figure class="align-default" id="plane-fig">
 <a class="reference internal image-reference" href="_images/reg-plane.png"><img alt="_images/reg-plane.png" src="_images/reg-plane.png" style="width: 600px;" /></a>
@@ -494,18 +486,18 @@ y_{i} &amp;= \beta_{0} + \sum_{j=1}^{k} \beta_{j}x_{ij} + \epsilon_{i} \\
 \begin{align}
 \mathcal{H}_{0}:&amp; \beta_{0} = 0 \\
 \mathcal{H}_{0}:&amp; \beta_{1} = 0 \\
-\vdots \\
+&amp;\vdots \\
 \mathcal{H}_{0}:&amp; \beta_{k} = 0
 \end{align}
 \end{split}\]</div>
-<p>Much like simple regression, the general aim is the accurate <em>prediction</em> of the outcome, this time using value of <em>multiple</em> variables. For instance, the manager of the production line may enhance their model of <code class="docutils literal notranslate"><span class="pre">Hours</span></code> by also considering <code class="docutils literal notranslate"><span class="pre">Wage</span></code> and <code class="docutils literal notranslate"><span class="pre">Age</span></code> of the workers, alongside <code class="docutils literal notranslate"><span class="pre">Lot</span> <span class="pre">Size</span></code>. This may allow for a more accurate prediction of <code class="docutils literal notranslate"><span class="pre">Hours</span></code>, as well as allowing the manager to determine which factor is the most influential and where the focus should be when considering how to adapt to changes in production.</p>
+<p>Much like simple regression, the general aim is the accurate <em>prediction</em> of the outcome, this time using value of <em>multiple</em> variables. For instance, the manager of the building company may enhance their model of <code class="docutils literal notranslate"><span class="pre">Hours</span></code> by also considering <code class="docutils literal notranslate"><span class="pre">Wage</span></code> and <code class="docutils literal notranslate"><span class="pre">Age</span></code> of the workers, alongside <code class="docutils literal notranslate"><span class="pre">Lot</span> <span class="pre">Size</span></code>. This may allow for a more accurate prediction of <code class="docutils literal notranslate"><span class="pre">Hours</span></code>, as well as allowing the manager to determine which factor is the most influential and where the focus should be when considering how to adapt to changes in production.</p>
 </section>
 <section id="multiple-regression-in-matrix-form">
 <h3>Multiple Regression in Matrix Form<a class="headerlink" href="#multiple-regression-in-matrix-form" title="Permalink to this heading">#</a></h3>
-<p>Now that we have discussed both <em>simple</em> and <em>multiple</em> regression, we can return to the topic of the GLM. The most important point to understand is that the GLM is simply <em>multiple regression in matrix form</em>. As such, if you understand multiple regression, then you already understand the GLM. The fact that there is a different term to refer to the matrix-variant of multiple regression is largely historical, as discussed in the box below.</p>
-<div class="tip admonition">
-<p class="admonition-title">The history of the GLM</p>
-<p>Historically, statistical analyses could be categorised as either <em>regression</em> methods or <em>analysis of variance</em> (ANOVA) methods. The distinction was that regression models sought to estimate the relationships between mutliple continuous measurements as a means of prediction, whereas ANOVA models sought to investigate group differences resulting from experimental manipulations. As such, regression was more related to observational studies, whereas ANOVA was associated with designed experiments. However, it was recognised in the 1950s that these two methods could be combined, meaning that an ANOVA model could be specified using mutliple regression. Since this point, the equivelance of these methods has been well-recognised, though regression and ANOVA are still often taught in isolation. The use of the term <em>General Linear Model</em> is usually reserved for the specific matrix-based framework using to specify both regression and ANOVA models, whereas the terms <em>regression</em> and <em>ANOVA</em> are typically used in reference to the more historical non-matrix forms of the same analyses.</p>
+<p>Now that we have discussed both <em>simple</em> and <em>multiple</em> regression, we can return to the topic of the GLM. The most important point to understand is that the GLM is simply <em>multiple regression in matrix form</em>. As such, if you understand multiple regression, then you already understand the GLM.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you do not feel comfortable with multiple regression at this stage, do not go any further. Spend some time reading around the subject and looking at other resources to get better acquainted with this method. Without understanding mutliple regression, everything that follows will be much harder to understand.</p>
 </div>
 <p>In terms of writing multiple regression in matrix notation, we start with the observation that there are always <span class="math notranslate nohighlight">\(n\)</span> regression equations, one for each data point</p>
 <div class="math notranslate nohighlight">
