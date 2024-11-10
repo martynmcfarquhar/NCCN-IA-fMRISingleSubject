@@ -686,7 +686,7 @@ y_{n}
 \]</div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>The most important element to understand about the equation that solves for <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> that it relies on a matrix <em>inverse</em>. Recall that not all matrices are invertible, meaning that not every model specified in the design matrix will be estimable. This is not often a problem in SPM, however, under certain special circumstances this can be an issue. SPM provides a visual check for this situation, so whilst it is rare, it is worth being aware of.</p>
+<p>One of the most important element to understand about the equation that solves for <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> that it relies on a matrix <em>inverse</em>. Recall that not all matrices are invertible, meaning that not every model specified in the design matrix will be estimable. This is not often a problem in SPM, however, under certain special circumstances this can be an issue. SPM provides a visual check for this situation, so whilst it is rare, it is worth being aware of.</p>
 </div>
 <p>Once the value of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> is determined, the value of <span class="math notranslate nohighlight">\(\sigma\)</span> can be derived from the errors. The error vector <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> is formed by a simple subtraction</p>
 <div class="math notranslate nohighlight">
@@ -698,7 +698,7 @@ y_{n}
 \[
 \hat{\sigma}^{2} = \frac{\boldsymbol{\epsilon}^{\prime}\boldsymbol{\epsilon}}{n-k}
 \]</div>
-<p>This is simply the sum of squared errors, the square-root of which provides the estimate of the standard deviation of the assumed probability distribution.</p>
+<p>This is simply the sum of squared errors, the square-root of which provides the estimate of the standard deviation of the assumed probability distribution. At this point, we have completed all the unknown values and the probability model is complete.</p>
 </section>
 <section id="interpreting-the-parameters">
 <h2>Interpreting the Parameters<a class="headerlink" href="#interpreting-the-parameters" title="Link to this heading">#</a></h2>
@@ -725,7 +725,7 @@ y_{n}
 </section>
 <section id="standard-errors-of-the-estimates">
 <h3>Standard Errors of the Estimates<a class="headerlink" href="#standard-errors-of-the-estimates" title="Link to this heading">#</a></h3>
-<p>Although the values of the parameter estimates can be interpreted on their own, to perform statistical inference we also need some indication of how <em>variable</em> the estimates are. This is done by calculating the <em>standard error</em> for each parameter. In the GLM, the standard errors of the parameter estimates can be calculated by first constructing the <em>variance-covariance</em> matrix of the estimates</p>
+<p>Although the values of the parameter estimates can be interpreted on their own, to perform statistical inference we also need some indication of how <em>uncertain</em> the estimates are. This is done by calculating the <em>standard error</em> for each parameter. In the GLM, the standard errors of the parameter estimates can be calculated by first constructing the <em>variance-covariance</em> matrix of the estimates</p>
 <div class="math notranslate nohighlight">
 \[
 \text{Cov}\left(\hat{\boldsymbol{\beta}}\right) = \hat{\sigma}^{2}\left(\mathbf{X}^{\prime}\mathbf{X}\right)^{-1}
@@ -739,7 +739,7 @@ y_{n}
 \[
 t = \frac{\hat{\beta}_{1}}{\text{SE}\left\{\hat{\beta}_{1}\right\}}
 \]</div>
-<p>This particular test statistic involves an implicit comparison of <span class="math notranslate nohighlight">\(\hat{\beta}_{1}\)</span> with a proposed population value of <span class="math notranslate nohighlight">\(\beta_{1} = 0\)</span>. In the context of a regression slope, the null hypothesis is therefore that there is no relationship between the outcome and predictor (i.e. the slope is <em>flat</em>). In the context of a mean difference, the null hypothesis is that there is no difference in the average value of the outcome variable between the groups (i.e. the means are <em>identical</em>). Decisions about whether the null hypothesis can be rejected can be taken by calculating the <em>p</em>-value associated with the calculated <em>t</em>-statistic via reference to the appropriate null distribution. As such, this element of the GLM is equivalent to performing inference on the results of both the simple and multiple regression models discussed earlier.</p>
+<p>This particular test statistic involves an implicit comparison of <span class="math notranslate nohighlight">\(\hat{\beta}_{1}\)</span> with a proposed population value of <span class="math notranslate nohighlight">\(\beta_{1} = 0\)</span>. In the context of a regression slope, the null hypothesis is therefore that there is no relationship between the outcome and predictor (i.e. the slope is <em>flat</em>). In the context of a mean difference, the null hypothesis is that there is no difference in the average value of the outcome variable between the groups (i.e. the means are <em>identical</em>). Decisions about whether the null hypothesis can be rejected can be taken by calculating the <em>p</em>-value associated with the calculated <em>t</em>-statistic via reference to the appropriate null distribution.</p>
 </section>
 </section>
 </section>
