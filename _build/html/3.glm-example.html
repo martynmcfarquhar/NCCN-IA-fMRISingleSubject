@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>The GLM: A Worked Example &#8212; fMRI Single-subject Statistical Modelling</title>
   
@@ -29,33 +28,35 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '3.glm-example';</script>
@@ -402,10 +403,10 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="the-glm-a-worked-example">
-<h1>The GLM: A Worked Example<a class="headerlink" href="#the-glm-a-worked-example" title="Permalink to this heading">#</a></h1>
+<h1>The GLM: A Worked Example<a class="headerlink" href="#the-glm-a-worked-example" title="Link to this heading">#</a></h1>
 <p>In the previous section, we discussed a lot of detail around the theory of the GLM. However, this was all somewhat abstract, with only minimal examples of applications. As such, in this section, we will try to make this framework more concrete by analysing a simple, non-imaging dataset.</p>
 <section id="dataset">
-<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading">#</a></h2>
+<h2>Dataset<a class="headerlink" href="#dataset" title="Link to this heading">#</a></h2>
 <p>For this example, we are looking at the miles per gallon (MPG) of a selection of cars. The question of interest is simply to understand how <em>horsepower</em>, <em>weight</em> and <em>transmission type</em> are associated with the fuel efficiency of a car. To keep this example contained, we have limited our sample to only 6 cars. The data set is shown below</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -451,7 +452,7 @@ document.write(`
 </div>
 </section>
 <section id="specifying-the-outcome-vector">
-<h2>Specifying the Outcome Vector<a class="headerlink" href="#specifying-the-outcome-vector" title="Permalink to this heading">#</a></h2>
+<h2>Specifying the Outcome Vector<a class="headerlink" href="#specifying-the-outcome-vector" title="Link to this heading">#</a></h2>
 <p>For this example, <code class="docutils literal notranslate"><span class="pre">MPG</span></code> is the outcome variable and so forms the vector <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -471,7 +472,7 @@ document.write(`
 </div>
 </section>
 <section id="building-the-design-matrix">
-<h2>Building the Design Matrix<a class="headerlink" href="#building-the-design-matrix" title="Permalink to this heading">#</a></h2>
+<h2>Building the Design Matrix<a class="headerlink" href="#building-the-design-matrix" title="Link to this heading">#</a></h2>
 <p>In terms of the design matrix, we need a column of 1s for the constant, followed by <code class="docutils literal notranslate"><span class="pre">horsepower</span></code>, <code class="docutils literal notranslate"><span class="pre">weight</span></code> and then a dummy variable for <code class="docutils literal notranslate"><span class="pre">transmission</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -531,7 +532,7 @@ document.write(`
 <p>So, we have our <em>outcome</em> in <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> and our <em>predictors</em> arranged in <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, but we do not know the values of the <em>parameters</em> in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> or the <em>errors</em> in <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span>.</p>
 </section>
 <section id="parameter-estimation">
-<h2>Parameter Estimation<a class="headerlink" href="#parameter-estimation" title="Permalink to this heading">#</a></h2>
+<h2>Parameter Estimation<a class="headerlink" href="#parameter-estimation" title="Link to this heading">#</a></h2>
 <p>We can estimate the parameters using the equation given in the previous section, derived from the method of maximum likelihood</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -619,7 +620,7 @@ document.write(`
 \end{split}\]</div>
 </section>
 <section id="interpreting-the-parameters">
-<h2>Interpreting the Parameters<a class="headerlink" href="#interpreting-the-parameters" title="Permalink to this heading">#</a></h2>
+<h2>Interpreting the Parameters<a class="headerlink" href="#interpreting-the-parameters" title="Link to this heading">#</a></h2>
 <p>In terms of interpreting the parameters, it is helpful to first put them in a table</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -708,7 +709,7 @@ document.write(`
 <p>providing both our estimates of the parameter values and their uncertainty.</p>
 </section>
 <section id="inference">
-<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h2>
+<h2>Inference<a class="headerlink" href="#inference" title="Link to this heading">#</a></h2>
 <p>As indicated in the previous section, to make decisions about the estimates we would typically divide each estimate by each standard error to form a <em>t</em>-statistic</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -781,7 +782,7 @@ document.write(`
 <p>Based on this information, we would conclude that none of the parameters were significantly different from zero. So although it appeared as if <code class="docutils literal notranslate"><span class="pre">weight</span></code> would be the most relevant predictor of <code class="docutils literal notranslate"><span class="pre">MPG</span></code>, according to this analysis there is not enough evidence to discount the posibility of <em>no</em> relationsip with <code class="docutils literal notranslate"><span class="pre">MPG</span></code> across all the predictor variables. Remember, that this conclusion is largely governed by the degree of <em>uncertainty</em> in the parameter estimates, due to the small sample. It is likely that with more data that the standard errors would decrease and a clearer picture of the relationship between these variables and <code class="docutils literal notranslate"><span class="pre">MPG</span></code> would emerge.</p>
 </section>
 <section id="using-fitlm">
-<h2>Using <code class="docutils literal notranslate"><span class="pre">fitlm</span></code><a class="headerlink" href="#using-fitlm" title="Permalink to this heading">#</a></h2>
+<h2>Using <code class="docutils literal notranslate"><span class="pre">fitlm</span></code><a class="headerlink" href="#using-fitlm" title="Link to this heading">#</a></h2>
 <p>We can confirm the manual calculations given above by using the <code class="docutils literal notranslate"><span class="pre">fitlm</span></code> function from the MATLAB <a class="reference external" href="https://uk.mathworks.com/products/statistics.html">Statistics and Machine Learning</a> toolbox. We pass the predictor variables as the first argument (missing out the constant) and the outcome variable as the second argument. As we can see, this function returns a table of values identical to those given above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

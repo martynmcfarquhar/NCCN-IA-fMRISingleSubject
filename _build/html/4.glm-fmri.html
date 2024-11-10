@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Using the GLM to Model fMRI Data &#8212; fMRI Single-subject Statistical Modelling</title>
   
@@ -29,33 +28,35 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '4.glm-fmri';</script>
@@ -400,10 +401,10 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="using-the-glm-to-model-fmri-data">
-<h1>Using the GLM to Model fMRI Data<a class="headerlink" href="#using-the-glm-to-model-fmri-data" title="Permalink to this heading">#</a></h1>
+<h1>Using the GLM to Model fMRI Data<a class="headerlink" href="#using-the-glm-to-model-fmri-data" title="Link to this heading">#</a></h1>
 <p>We have now seen how to use the GLM as a tool to analyse non-imaging data. Now we need to take what we have learned so far and apply it to fMRI data. Remember from previous lessons that the primary data of interest is the fMRI time series at each voxel. In the context of the GLM, the time series from a single voxel forms the outcome vector <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span>. The approach is then to loop through every voxel in the image, estimating the GLM for each time series separately. This is known as the <em>mass-univariate</em> framework.</p>
 <section id="the-mass-univariate-framework">
-<h2>The Mass-univariate Framework<a class="headerlink" href="#the-mass-univariate-framework" title="Permalink to this heading">#</a></h2>
+<h2>The Mass-univariate Framework<a class="headerlink" href="#the-mass-univariate-framework" title="Link to this heading">#</a></h2>
 <p>The mass-univariate approach to modelling fMRI data was first introduced by <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/hbm.460020402">Fristion <em>et al.</em> (1994)</a>. In brief, we build a <em>single</em> design matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> of predictors that code for changes in signal based on the timing of the experimental stimuli. We then use <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> to estimate the GLM at each voxel separately. For voxel <span class="math notranslate nohighlight">\(\nu\)</span>, the model is therefore</p>
 <div class="math notranslate nohighlight">
 \[
@@ -413,17 +414,17 @@ document.write(`
 <figure class="align-default" id="param-img-fig">
 <a class="reference internal image-reference" href="_images/param-images.png"><img alt="_images/param-images.png" src="_images/param-images.png" style="width: 800px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Illustration of how the parameter estimates from a mass-univariate GLM can be saved to images.</span><a class="headerlink" href="#param-img-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Illustration of how the parameter estimates from a mass-univariate GLM can be saved to images.</span><a class="headerlink" href="#param-img-fig" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="creating-predictors-for-the-time-series">
-<h2>Creating Predictors for the Time Series<a class="headerlink" href="#creating-predictors-for-the-time-series" title="Permalink to this heading">#</a></h2>
+<h2>Creating Predictors for the Time Series<a class="headerlink" href="#creating-predictors-for-the-time-series" title="Link to this heading">#</a></h2>
 <p>As indicated above, the mass-univariate approach depends upon forming a single design matrix that can be used at each voxel to predict changes in the BOLD signal associated with the experimental stimuli. The easiest approach to code such changes is to specify a dummy variable, where a value of 1 indicates the presence of an experimental stimulus and a value of 0 indicates its absence. To make this clear, imagine a simple finger tapping experiment where the subject taps their fingers for 5 seconds and then rests for 5 seconds. To code this pattern as a dummy variable, we use a value of 0 to represent periods of rest and a value of 1 to indicate periods of tapping. Any region of the brain that follows this on-off pattern is assumed to be involved in the action of finger tapping. For instance, consider the illustration in <a class="reference internal" href="#timeseries-dummy-fig"><span class="std std-numref">Fig. 10</span></a>. This shows a time series from the motor cortex on the left and a dummy variable for the tapping conditions on the right.</p>
 <figure class="align-default" id="timeseries-dummy-fig">
 <a class="reference internal image-reference" href="_images/time-series-and-dummy.png"><img alt="_images/time-series-and-dummy.png" src="_images/time-series-and-dummy.png" style="width: 800px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Illustration of how a dummy variable can code the on-off pattern of the stimulus presentation..</span><a class="headerlink" href="#timeseries-dummy-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Illustration of how a dummy variable can code the on-off pattern of the stimulus presentation..</span><a class="headerlink" href="#timeseries-dummy-fig" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In terms of the GLM, the design matrix for this form of model would contains a columns of 1’s for the intercept and then the dummy variable coding which elements of the time series were measured during rest and which elements were measured during tapping. For instance, if the subject repeated the 5 seconds of tapping twice and we used TR = 1, the model would have the form</p>
@@ -506,17 +507,17 @@ y_{20}
 <figure class="align-default" id="dummy-interp-fig">
 <a class="reference internal image-reference" href="_images/dummy-interp.png"><img alt="_images/dummy-interp.png" src="_images/dummy-interp.png" style="width: 550px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Illustration of interpreting the parameter values from a dummy variable model.</span><a class="headerlink" href="#dummy-interp-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Illustration of interpreting the parameter values from a dummy variable model.</span><a class="headerlink" href="#dummy-interp-fig" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="visualising-the-design-matrix">
-<h2>Visualising the Design Matrix<a class="headerlink" href="#visualising-the-design-matrix" title="Permalink to this heading">#</a></h2>
+<h2>Visualising the Design Matrix<a class="headerlink" href="#visualising-the-design-matrix" title="Link to this heading">#</a></h2>
 <p>As already indicated, the design matrix is a very important part of the GLM. Not only is it the only element of the GLM equation that is constant across voxels, but it also encodes our predictions about what we expect to see in regions of the brain that are responding to the experimental manipulation. Knowing the structure of the design matrix is therefore essential to being able to interpret the parameter estimates. Because of this, SPM take the unique step of <em>drawing</em> the design matrix as a means of summarising the model. An example of this is given in <a class="reference internal" href="#x-example-fig"><span class="std std-numref">Fig. 12</span></a>. Solid blocks of colour represent dummy variables whereas those columns with a gradient represent continuous variables.</p>
 <figure class="align-default" id="x-example-fig">
 <a class="reference internal image-reference" href="_images/X-example.jpg"><img alt="_images/X-example.jpg" src="_images/X-example.jpg" style="width: 700px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Example of the design matrix visualisation produced by SPM.</span><a class="headerlink" href="#x-example-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Example of the design matrix visualisation produced by SPM.</span><a class="headerlink" href="#x-example-fig" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>We can see the same effect by using the <code class="docutils literal notranslate"><span class="pre">imagesc</span></code> function in MATLAB with the design matrix from the previous example.</p>
@@ -540,17 +541,17 @@ y_{20}
 </div>
 </section>
 <section id="time-series-and-regression-perspectives">
-<h2>Time Series and Regression Perspectives<a class="headerlink" href="#time-series-and-regression-perspectives" title="Permalink to this heading">#</a></h2>
+<h2>Time Series and Regression Perspectives<a class="headerlink" href="#time-series-and-regression-perspectives" title="Link to this heading">#</a></h2>
 <p>Compared to when we were applying the GLM to non-imaging data, one of the additional complications of time series data is that it has a natural ordering based upon when each data point was collected. This means there are <em>two</em> complimentary perspectives we can use for understanding the model. In the <em>time series perspective</em>, we view the data in its natural ordering with time on the <span class="math notranslate nohighlight">\(x\)</span>-axis and intensity on the <span class="math notranslate nohighlight">\(y\)</span>-axis. From this perspective, we can see gross changes in the shape of the signal over time. Superimposing the model prediction allows visualising of when the predicted signal change corresponds to a change in the raw data. This is shown in the <em>left</em> column of <a class="reference internal" href="#ts-reg-fig"><span class="std std-numref">Fig. 13</span></a>. As an alternative, the <em>regression perspective</em> involves visualising the model as a typical multiple regression problem. When plotted, the value of the predictor variable is given on the <span class="math notranslate nohighlight">\(x\)</span>-axis, with intensity on the <span class="math notranslate nohighlight">\(y\)</span>-axis. For a dummy variable, the <span class="math notranslate nohighlight">\(x\)</span>-axis will correspond to values of only 1 or 0, resulting in a bisection of the data into those values measured during one experimental condition and those measured during the other. From this perspective, superimposing the model prediction means drawing the regression line between the two categories of data, as shown in the <em>right</em> column of <a class="reference internal" href="#ts-reg-fig"><span class="std std-numref">Fig. 13</span></a>.</p>
 <figure class="align-default" id="ts-reg-fig">
 <a class="reference internal image-reference" href="_images/ts-reg-persp.png"><img alt="_images/ts-reg-persp.png" src="_images/ts-reg-persp.png" style="width: 800px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Example of both the time series perspective (<em>left</em>) and regression perspective (<em>right</em>) on the model fit from the GLM. This is shown for both a voxel with a strong signal change (<em>top</em>) and a voxel with a weak signal change (<em>bottom</em>). As we can see, the magnitude of the regression slope corresponds to the magnitude of signal change from one condition to another. In the time series perspective, this can be seen as the <em>height</em> of the signal change during periods associated with each condition.</span><a class="headerlink" href="#ts-reg-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Example of both the time series perspective (<em>left</em>) and regression perspective (<em>right</em>) on the model fit from the GLM. This is shown for both a voxel with a strong signal change (<em>top</em>) and a voxel with a weak signal change (<em>bottom</em>). As we can see, the magnitude of the regression slope corresponds to the magnitude of signal change from one condition to another. In the time series perspective, this can be seen as the <em>height</em> of the signal change during periods associated with each condition.</span><a class="headerlink" href="#ts-reg-fig" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="inference">
-<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h2>
+<h2>Inference<a class="headerlink" href="#inference" title="Link to this heading">#</a></h2>
 <p>At this point, it would be natural to try implementing the same inferential procedure we saw earlier, using the mass-univariate framework. This would involve converting each parameter estimate to a <em>t</em>-statistic by dividing by its respective standard error. This would produce several <em>images</em> of <em>t</em>-statistics and associated <em>p</em>-values, allowing us to discern which voxels are associated with significant effects. Unfortunately, there are a number of complications with this approach that are beyond the scope of this lesson. As such, we will be leaving the process of statistical inference using images until next week. Furthermore, there are a number of issues with the methods outlined in this section that require correction before we can consider performing inference on the results of the mass-univariate GLM.</p>
 </section>
 </section>
