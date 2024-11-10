@@ -574,7 +574,7 @@ y_{n}
 \vdots  \\
 \beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + \dots  + \beta_{k}x_{nk}
 \end{bmatrix}
-= \hat{\mathbf{Y}}
+= \hat{\mathbf{y}}
 \end{split}\]</div>
 <p>These equations produce the <em>predicted</em> values from the model <span class="math notranslate nohighlight">\(\left(\hat{\mathbf{y}}\right)\)</span>. As such, another way to look at the GLM is as a <em>prediction</em> plus <em>error</em></p>
 <div class="math notranslate nohighlight">
@@ -586,14 +586,28 @@ y_{n}
 </section>
 <section id="building-the-design-matrix">
 <h2>Building the Design Matrix<a class="headerlink" href="#building-the-design-matrix" title="Link to this heading">#</a></h2>
-<p>At the core of the GLM is the structure of the design matrix. This is the part of the GLM that changes from analysis-to-analysis and is the element that defines different models of our data. The <em>general</em> bit of the GLM is a reference to the fact that including continuous predictors in the design matrix will produce a regression model, whereas including categorical predictors will produce an ANOVA model. As we will come to see, the design matrix is such a key part of the GLM that SPM chooses to <em>visualise</em> this element as a means of communicating the form of GLM being used to model the fMRI data. As such, understanding how the design matrix is structured is vital to understanding the GLM.</p>
+<p>At the core of the GLM is the structure of the design matrix. This is the part of the GLM that changes from analysis-to-analysis and is the element that defines different models of our data. The <em>general</em> bit of the GLM is a reference to the fact that including continuous predictors in the design matrix will produce a regression model, including categorical predictors will produce an ANOVA model and including both will produce an ANCOVA model. As we will come to see, the design matrix is such a key part that SPM chooses to <em>visualise</em> this element of the GLM as a means of communicating the form model being fit to the fMRI data. As such, understanding how the design matrix is structured is vital to understanding the GLM.</p>
 <section id="continuous-predictor-variables">
 <h3>Continuous Predictor Variables<a class="headerlink" href="#continuous-predictor-variables" title="Link to this heading">#</a></h3>
-<p>Any variable that is <em>numeric</em> and represents some sort of <em>measurement</em> is classified as a <em>continuous</em> predictor variable. For instance, measurements such as IQ, reaction time, test score, age or weight are examples of continuous predictor variables. These types of variables enter the design matrix verbatim as column vectors. As such, they do not require any form of special treatment, as we will see in the worked example later in the lesson.</p>
+<p>Any variable that is <em>numeric</em> and represents some sort of <em>measurement</em> is classified as a <em>continuous</em> predictor variable. For instance, measurements such as</p>
+<ul class="simple">
+<li><p>IQ</p></li>
+<li><p>reaction time</p></li>
+<li><p>test score</p></li>
+<li><p>age</p></li>
+<li><p>weight
+are all examples of continuous predictor variables. These types of variables enter the design matrix directly as column vectors. As such, they do not require any form of special treatment, as we will see in the worked example later in the lesson.</p></li>
+</ul>
 </section>
 <section id="categorical-predictor-variables">
 <h3>Categorical Predictor Variables<a class="headerlink" href="#categorical-predictor-variables" title="Link to this heading">#</a></h3>
-<p>Any variable that represents a form of <em>grouping</em> or <em>category</em> is classified as a <em>categorical</em> variable. For instance, categories such as diagnostic group, blood type or ethnicity are examples of categorical predictor variables. Compared with continuous variables, categorical variables are more complex to use with the GLM. Fundamentally, the category labels must be converted into numbers. The way this is done is by forming what are known as <em>dummy variables</em>. These are variables that conatin either a value of 1 or 0 depending on the category. For instance, if the categories were <em>patient</em> or <em>control</em>, the dummy variable values could be assigned like so</p>
+<p>Any variable that represents a form of <em>grouping</em> or <em>category</em> is classified as a <em>categorical</em> variable. For instance, categories such as</p>
+<ul class="simple">
+<li><p>diagnostic group</p></li>
+<li><p>blood type</p></li>
+<li><p>ethnicity
+are all examples of categorical predictor variables. Compared with continuous variables, categorical variables are more complex to use with the GLM as the category labels must be converted into numbers. The way this is done is by forming what are known as <em>dummy variables</em>. These are variables that contain either a value of 1 or 0, depending on the category. For instance, if the categories were <em>patient</em> or <em>control</em>, the dummy variable values could be assigned like so</p></li>
+</ul>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Category</p></th>
@@ -643,7 +657,7 @@ y_{n}
 </tbody>
 </table>
 </div>
-<p>In both cases, notice how there is always one fewer dummy variable than the number of categories. As an illustration, consider the design matrix below containing a dummy variable representing diagnosis, where the first 3 subjects are patients and the last 3 are controls.</p>
+<p>In both cases, notice how there is always one fewer dummy variable than the number of categories. For example, consider the design matrix below containing a dummy variable representing diagnosis, where the first 3 subjects are patients and the last 3 are controls.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \mathbf{X} = 
@@ -663,25 +677,28 @@ y_{n}
 <p>Once the design matrix is formed, the probability model of the GLM is given by</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{Y}_{i} \sim \mathcal{N}\left(\mathbf{X}_{i}\boldsymbol{\beta},\sigma\right)
+\mathbf{y}_{i} \sim \mathcal{N}\left(\mathbf{X}_{i}\boldsymbol{\beta},\sigma\right)
 \]</div>
-<p>The next step is therefore to use maximum likelihood methods to estimate the parameters. Although beyond the scope of this lesson to discuss in more detail, maximum likelihood can be used to derive a single equation that estimates the regression plane that best fits the data. In this context, “best fits” is equivalent to minimising the errors, such that the estimated parameters are those that minimises the vertical distances between the regression plane and the raw data. The equation that achieves this is given by</p>
+<p>The next step is therefore to use maximum likelihood methods to estimate the parameters. Although somewhat beyond the scope of this lesson, maximum likelihood can be used to derive a single equation that produces the regression plane that best fits the data. In this context, “best fits” is equivalent to minimising the errors, such that the estimated parameters are those that minimises the vertical distances between the regression plane and the raw data. The equation that achieves this is given by</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{\boldsymbol{\beta}} = \left(\mathbf{X}^{\prime}\mathbf{X}\right)^{-1}\mathbf{X}^{\prime}\mathbf{Y}
+\hat{\boldsymbol{\beta}} = \left(\mathbf{X}^{\prime}\mathbf{X}\right)^{-1}\mathbf{X}^{\prime}\mathbf{y}
 \]</div>
-<p>which is notable for its reliance on a matrix <em>inverse</em>. Recall that not all matrices are invertible, meaning that not every model specified in the design matrix will be estimable. This is more of an issue with other fMRI software, but is rarely a problem with SPM given its use of a <em>pseudo-inverse</em> for solving this equation. This approach comes with its own limitations, but does mean that all models should be estimable and we are not limited in terms of the form that the design matrix can take.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The most important element to understand about the equation that solves for <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> that it relies on a matrix <em>inverse</em>. Recall that not all matrices are invertible, meaning that not every model specified in the design matrix will be estimable. This is not often a problem in SPM, however, under certain special circumstances this can be an issue. SPM provides a visual check for this situation, so whilst it is rare, it is worth being aware of.</p>
+</div>
 <p>Once the value of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> is determined, the value of <span class="math notranslate nohighlight">\(\sigma\)</span> can be derived from the errors. The error vector <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> is formed by a simple subtraction</p>
 <div class="math notranslate nohighlight">
 \[
-\boldsymbol{\epsilon} = \mathbf{Y} - \mathbf{X}\hat{\boldsymbol{\beta}}
+\boldsymbol{\epsilon} = \mathbf{y} - \mathbf{X}\hat{\boldsymbol{\beta}}
 \]</div>
 <p>and can then be used to derive the model variance using</p>
 <div class="math notranslate nohighlight">
 \[
 \hat{\sigma}^{2} = \frac{\boldsymbol{\epsilon}^{\prime}\boldsymbol{\epsilon}}{n-k}
 \]</div>
-<p>This is simply the sum of squared errors, the square-root of which provides the estimate of the standard deviation of the probability model distribution.</p>
+<p>This is simply the sum of squared errors, the square-root of which provides the estimate of the standard deviation of the assumed probability distribution.</p>
 </section>
 <section id="interpreting-the-parameters">
 <h2>Interpreting the Parameters<a class="headerlink" href="#interpreting-the-parameters" title="Link to this heading">#</a></h2>
