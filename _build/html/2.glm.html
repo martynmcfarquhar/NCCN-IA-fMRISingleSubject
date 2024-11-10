@@ -499,10 +499,10 @@ y_{1} &amp;= \beta_{0} + \beta_{1}x_{11} + \beta_{2}x_{12} + \dots + \beta_{k}x_
 y_{2} &amp;= \beta_{0} + \beta_{1}x_{21} + \beta_{2}x_{22} + \dots + \beta_{k}x_{2k} + \epsilon_{2} \\
 y_{3} &amp;= \beta_{0} + \beta_{1}x_{31} + \beta_{2}x_{32} + \dots + \beta_{k}x_{3k} + \epsilon_{3} \\
 \vdots  \\
-y_{n} &amp;= \beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + \dots + \beta_{k}x_{nk} + \epsilon_{n}
+y_{n} &amp;= \beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + \dots + \beta_{k}x_{nk} + \epsilon_{n}.
 \end{align}
 \end{split}\]</div>
-<p>Because these regression equations represent a system of linear equations, we know we can write them as vectors and matrices. Importantly, we can separate the predictor variables from the coefficients to give the following structure</p>
+<p>Because these regression equations represent a system of linear equations, we we can write them as vectors and matrices. Importantly, we can separate the predictor variables from the coefficients to give the following structure</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{bmatrix}
@@ -539,11 +539,11 @@ y_{n}
 <p>This can be written in shorthand as</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}
+\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}
 \]</div>
 <p>This is probably the most important equation you will see on this course. It encapsulates the entire structure of our data analysis and is something you will become intimately familiar with during this module. To make this structure clear</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> represents the <em>data vector</em> containing the values of the outcome variable</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{y}\)</span> represents the <em>data vector</em> containing the values of the outcome variable</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathbf{X}\)</span> represents the <em>design matrix</em> containing each of the predictor variables as columns</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> represents the vector of <em>model parameters</em></p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> represents the vector of <em>errors</em></p></li>
@@ -576,10 +576,10 @@ y_{n}
 \end{bmatrix}
 = \hat{\mathbf{Y}}
 \end{split}\]</div>
-<p>These equations produce the <em>predicted</em> values from the model <span class="math notranslate nohighlight">\(\left(\hat{\mathbf{Y}}\right)\)</span>. As such, another way to look at the GLM is as a <em>prediction</em> plus <em>error</em></p>
+<p>These equations produce the <em>predicted</em> values from the model <span class="math notranslate nohighlight">\(\left(\hat{\mathbf{y}}\right)\)</span>. As such, another way to look at the GLM is as a <em>prediction</em> plus <em>error</em></p>
 <div class="math notranslate nohighlight">
 \[
-\underset{\text{Data}}{\mathbf{Y}} = \underset{\text{Prediction}}{\hat{\mathbf{Y}}} + \underset{\text{Error}}{\boldsymbol{\epsilon}}
+\underset{\text{Data}}{\mathbf{y}} = \underset{\text{Prediction}}{\hat{\mathbf{y}}} + \underset{\text{Error}}{\boldsymbol{\epsilon}}
 \]</div>
 <p>where the nature of the prediction depends upon the form of the design matrix.</p>
 </section>
