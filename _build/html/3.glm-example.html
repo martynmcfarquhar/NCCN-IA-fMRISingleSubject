@@ -453,15 +453,15 @@ document.write(`
 </section>
 <section id="specifying-the-outcome-vector">
 <h2>Specifying the Outcome Vector<a class="headerlink" href="#specifying-the-outcome-vector" title="Link to this heading">#</a></h2>
-<p>For this example, <code class="docutils literal notranslate"><span class="pre">MPG</span></code> is the outcome variable and so forms the vector <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span></p>
+<p>For this example, <code class="docutils literal notranslate"><span class="pre">MPG</span></code> is the outcome variable and so forms the vector <span class="math notranslate nohighlight">\(\mathbf{y}\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">21.0</span><span class="w"> </span><span class="mf">21.0</span><span class="w"> </span><span class="mf">22.8</span><span class="w"> </span><span class="mf">21.4</span><span class="w"> </span><span class="mf">18.7</span><span class="w"> </span><span class="mf">18.1</span><span class="p">]</span><span class="o">&#39;</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">21.0</span><span class="w"> </span><span class="mf">21.0</span><span class="w"> </span><span class="mf">22.8</span><span class="w"> </span><span class="mf">21.4</span><span class="w"> </span><span class="mf">18.7</span><span class="w"> </span><span class="mf">18.1</span><span class="p">]</span><span class="o">&#39;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><html><body><pre>Y = 6x1 double
+<div class="output text_html"><html><body><pre>y = 6x1 double
    21.0000
    21.0000
    22.8000
@@ -529,14 +529,14 @@ document.write(`
 \epsilon_{6}
 \end{bmatrix}
 \end{split}\]</div>
-<p>So, we have our <em>outcome</em> in <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> and our <em>predictors</em> arranged in <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, but we do not know the values of the <em>parameters</em> in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> or the <em>errors</em> in <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span>.</p>
+<p>So, we have our <em>outcome</em> in <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> and our <em>predictors</em> arranged in <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, but we do not know the values of the <em>parameters</em> in <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> or the <em>errors</em> in <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span>.</p>
 </section>
 <section id="parameter-estimation">
 <h2>Parameter Estimation<a class="headerlink" href="#parameter-estimation" title="Link to this heading">#</a></h2>
 <p>We can estimate the parameters using the equation given in the previous section, derived from the method of maximum likelihood</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">beta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">inv</span><span class="p">(</span><span class="n">X</span><span class="o">&#39;*</span><span class="n">X</span><span class="p">)</span><span class="o">*</span><span class="n">X</span><span class="o">&#39;*</span><span class="n">Y</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">beta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">inv</span><span class="p">(</span><span class="n">X</span><span class="o">&#39;*</span><span class="n">X</span><span class="p">)</span><span class="o">*</span><span class="n">X</span><span class="o">&#39;*</span><span class="n">y</span>
 </pre></div>
 </div>
 </div>
@@ -548,15 +548,15 @@ document.write(`
    -1.7150
 </pre></body></html></div></div>
 </div>
-<p>These are therefore the values that make the current data most probable. Once we have the parameter estimates we can calculate the predicted values of <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span>, denoted <span class="math notranslate nohighlight">\(\hat{\mathbf{Y}}\)</span></p>
+<p>These are therefore the values that make the current data most probable. Once we have the parameter estimates we can calculate the predicted values of <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>. This is denoted <span class="math notranslate nohighlight">\(\hat{\mathbf{y}}\)</span> and is pronounced “y-hat”.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Yhat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">X</span><span class="o">*</span><span class="nb">beta</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">yhat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">X</span><span class="o">*</span><span class="nb">beta</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><html><body><pre>Yhat = 6x1 double
+<div class="output text_html"><html><body><pre>yhat = 6x1 double
    21.4985
    20.2375
    23.0640
@@ -565,15 +565,16 @@ document.write(`
    19.0840
 </pre></body></html></div></div>
 </div>
-<p>These values represent the points on the regression plane for each combination of predictor values. For instance, focussing on the first estimate, the model predicts that any car with 110 horsepower that weighs 2,620 lbs and has a manual transmission will achieve 21.4985 MPG. These estimates can then be used calculate the errors</p>
+<p>These values represent the points on the regression plane for each unique combination of predictor values. For instance, focusing on the first estimate, the model predicts that any car with 110 horsepower that weighs 2,620 lbs and has a manual transmission will achieve 21.4985 MPG.</p>
+<p>These estimates can be used calculate the errors</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">E</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Yhat</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">e</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">yhat</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><html><body><pre>E = 6x1 double
+<div class="output text_html"><html><body><pre>e = 6x1 double
    -0.4985
     0.7625
    -0.2640
@@ -655,7 +656,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="w">      </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
 <span class="n">p</span><span class="w">      </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
-<span class="n">sigma2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">E</span><span class="o">&#39;*</span><span class="n">E</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">p</span><span class="p">)</span>
+<span class="n">sigma2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="o">&#39;*</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -728,8 +729,8 @@ document.write(`
 <p>which we can then use to calculate <em>p</em>-values by querying the null <em>t</em>-distribution with <span class="math notranslate nohighlight">\(n-p\)</span> degrees of freedom</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">pvals</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">tcdf</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">n</span><span class="o">-</span><span class="n">p</span><span class="p">);</span><span class="w"> </span><span class="c">% one-tailed tests</span>
-<span class="n">pvals</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">pvals</span><span class="w"> </span><span class="o">.*</span><span class="w"> </span><span class="mi">2</span><span class="w">            </span><span class="c">% two-tailed tests</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">pvals</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">tcdf</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">n</span><span class="o">-</span><span class="n">p</span><span class="p">);</span><span class="w"> </span><span class="c">% one-tailed p-value</span>
+<span class="n">pvals</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">pvals</span><span class="w"> </span><span class="o">.*</span><span class="w"> </span><span class="mi">2</span><span class="w">            </span><span class="c">% convert to two-tailed p-values</span>
 </pre></div>
 </div>
 </div>
@@ -786,7 +787,8 @@ document.write(`
 <p>We can confirm the manual calculations given above by using the <code class="docutils literal notranslate"><span class="pre">fitlm</span></code> function from the MATLAB <a class="reference external" href="https://uk.mathworks.com/products/statistics.html">Statistics and Machine Learning</a> toolbox. We pass the predictor variables as the first argument (missing out the constant) and the outcome variable as the second argument. As we can see, this function returns a table of values identical to those given above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">fitlm</span><span class="p">(</span><span class="n">X</span><span class="p">(:,</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">),</span><span class="n">Y</span><span class="p">)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Predictors</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">X</span><span class="p">(:,</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">);</span><span class="w">           </span><span class="c">% predictors without the constant column</span>
+<span class="n">Model</span><span class="w">      </span><span class="p">=</span><span class="w"> </span><span class="n">fitlm</span><span class="p">(</span><span class="n">Predictors</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -796,13 +798,13 @@ Linear regression model:
     y ~ 1 + x1 + x2 + x3
 
 Estimated Coefficients:
-                    <strong>Estimate</strong>        <strong>SE</strong>        <strong>tStat</strong>       <strong>pValue</strong> 
-                   <strong>__________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>
+                    Estimate        SE        tStat       pValue 
+                   __________    ________    ________    ________
 
-    <strong>(Intercept)</strong>          36.7      9.7385      3.7686    0.063752
-    <strong>x1         </strong>    -0.0048303    0.023622    -0.20448      0.8569
-    <strong>x2         </strong>       -4.9448       3.075     -1.6081     0.24908
-    <strong>x3         </strong>        -1.715      2.4422    -0.70224     0.55526
+    (Intercept)          36.7      9.7385      3.7686    0.063752
+    x1             -0.0048303    0.023622    -0.20448      0.8569
+    x2                -4.9448       3.075     -1.6081     0.24908
+    x3                 -1.715      2.4422    -0.70224     0.55526
 
 
 Number of observations: 6, Error degrees of freedom: 2
