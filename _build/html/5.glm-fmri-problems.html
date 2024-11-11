@@ -460,10 +460,6 @@ document.write(`
 \[
 \mathbf{WY} = \mathbf{WX}\boldsymbol{\beta} + \mathbf{W}\boldsymbol{\epsilon}
 \]</div>
-<div class="tip admonition">
-<p class="admonition-title">Whitening</p>
-<p>The term <em>whitening</em> comes from the perspective of signal processing, where removal of the correlation makes the errors akin to <em>white noise</em>. From a practical perspective, after the whitening procedure the data and the design matrix will be different. This is because removing the correlation breaks the connection between the data and the predictor variables because that the shape of the BOLD response will change. In order to make sure our predictor variables are still accurate, they must also be adjusted by the whitening matrix. This is the reason why you will see the design matrix change colour in SPM during the course of the statistical modelling.</p>
-</div>
 </section>
 <section id="issue-3-low-frequency-noise">
 <h2>Issue 3: Low-frequency Noise<a class="headerlink" href="#issue-3-low-frequency-noise" title="Link to this heading">#</a></h2>
